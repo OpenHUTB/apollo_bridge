@@ -1,6 +1,6 @@
 
 <!-- GETTING STARTED -->
-## Getting Started
+## 入门
 
 ### Prerequisites
 
