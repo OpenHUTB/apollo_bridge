@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>Deployment Introduction - 仿真桥</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "Deployment Introduction";
+        var mkdocs_page_input_path = "deployment_introduction.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> 仿真桥
+        </a><div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="搜索文档" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">入门</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">示例视频</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">仿真桥</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">Deployment Introduction</li>
+<li class="wy-breadcrumbs-aside">
+<a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/deployment_introduction.md"> 编辑页面</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<div><h1 id="deployment-introduction">Deployment Introduction</h1>
+<p>To make the Carla Apollo Bridge work properly, you need to start the following three containers:</p>
+<p><strong>Apollo container</strong></p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>bash<span class="w"> </span>docker/scripts/dev_start.sh
+$<span class="w"> </span>bash<span class="w"> </span>docker/scripts/dev_into.sh
+//in<span class="w"> </span>container
+./apollo.sh<span class="w"> </span>build_gpu
+./scripts/bootstrap.sh
+</code></pre></div>
+<p>The above commands start Apollo/CyberRT environment and Dreamview service, where CyberRT HOST(CYBER_IP) is the external address of the container. Since the container is started with HOST network, in Ubuntu, the CYBER_IP is 172.17.0.1(docker0)</p>
+<p><strong>Carla container</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>carla_apollo_bridge/scripts
+./docker_run_carla.sh
+</code></pre></div>
+<p>The preceding command starts a Carla container with HOST network. You can access the Carla service through docker0(172.17.0.1).</p>
+<p><strong>Carla_Apollo_Bridge Container</strong>
+</p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>carla_apollo_bridge/docker
+./build_docker.sh
+./run_docker.sh
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-ti<span class="w"> </span>carla_cyber_0.9.14<span class="w"> </span>bash
+</code></pre></div>
+The preceding command starts Carla Apollo Bridge container. By default, the container uses the Docker Bridge Network and its external address is 172.17.0.X. The container uses the CyberRT environment, which is in the same Cyber Network as the Apollo container. They can discover and communicate with each other.
+<p>To sum up, its network architecture is as follows:</p>
+<p><img alt="image" src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/XJ9LnWvpz0eZlvDe/img/dbc28719-8e19-4311-a9f4-01ceb490ba4a.png"/></p>
+<p><strong>Other</strong></p>
+<p>Execution in Apollo container <code>./scripts/bootstrap.sh</code> will start the Dreamview service, Dreamview service is provided by CyberRT Node, this can be check with <code>cyber_node list</code> in CyberRT environment (Apollo container or carla apollo bridge container)</p>
+<p><img alt="image" src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/XJ9LnWvpz0eZlvDe/img/f172e57e-b22a-4a8c-b1f3-39ff0bf12a00.png"/></p>
+<p>Dreamview UI and Dreamview services communicate through Websocket.</p>
+<h3 id="reference">Reference:</h3>
+<h5 id="cyber-rt-topology-discovery"><a href="https://developer.baidu.com/article/detail.html?id=290450"><strong>Cyber RT Topology Discovery</strong></a></h5>
+<h5 id="cyberrt-basic-framework"><a href="https://zhuanlan.zhihu.com/p/479518561"><strong>CyberRT basic framework</strong></a></h5>
+<h4 id="baidu-self-driving-simulation"><a href="https://zhuanlan.zhihu.com/p/398401943"><strong>Baidu self-driving simulation</strong></a></h4></div>
+</div>
+</div><footer>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>OpenHUTB 版权所有 © 2026</p>
+</div>
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
+</span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script>
+<script src="../js/umlconvert.js"></script>
+<script src="../search/main.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>

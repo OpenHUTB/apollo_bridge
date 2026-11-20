@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>示例视频 - 仿真桥</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u793a\u4f8b\u89c6\u9891";
+        var mkdocs_page_input_path = "RefinedController.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> 仿真桥
+        </a><div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="搜索文档" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">入门</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">示例视频</a>
+<ul class="current">
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">仿真桥</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">示例视频</li>
+<li class="wy-breadcrumbs-aside">
+<a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/RefinedController.md"> 编辑页面</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<div><h2 id="示例视频">示例视频</h2>
+<p>Followings are the demo videos showing the performance of improved controller.</p>
+<p>Demo: turn left - 90-degree sharp left turn, Town01</p>
+<p><a href="https://www.youtube.com/watch?v=XBq-kF-m2Us"><img alt="Demo: left turn" src="https://img.youtube.com/vi/XBq-kF-m2Us/0.jpg"/></a></p>
+<p>Demo: turn right - 90-degree sharp right turn, Town01</p>
+<p><a href="https://www.youtube.com/watch?v=oOJiw21AAGk"><img alt="Demo: right turn" src="https://img.youtube.com/vi/oOJiw21AAGk/0.jpg"/></a></p>
+<p>The above demo is using the tuned MPC controller with turning ratio (in bridge) tuned. This is the default co-simulation control performance that this project aims to provide.</p>
+<p>To achieve the above performance, <a href="../carla_bridge/actor/ego_vehicle.py#L57">turning ratio</a> is set as the following:</p>
+<div class="highlight"><pre><span></span><code>self.right_turn_ratio<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.7
+self.left_turn_ratio<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>.85
+</code></pre></div>
+<p>The MPC controller <a href="../carla_bridge/refined_controller/control_conf.pb.txt#L9370">parameters</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>matrix_q:<span class="w"> </span><span class="m">3</span>.0
+<span class="w">  </span>matrix_q:<span class="w"> </span><span class="m">0</span>.0
+<span class="w">  </span>matrix_q:<span class="w"> </span><span class="m">18</span>.45
+<span class="w">  </span>matrix_q:<span class="w"> </span><span class="m">0</span>.0
+<span class="w">  </span>matrix_q:<span class="w"> </span><span class="m">30</span>.0
+<span class="w">  </span>matrix_q:<span class="w"> </span><span class="m">10</span>.0
+<span class="w">  </span>matrix_r:<span class="w"> </span><span class="m">3</span>.25
+<span class="w">  </span>matrix_r:<span class="w"> </span><span class="m">1</span>.75
+</code></pre></div>
+<h2 id="how-to-use-the-improved-mpc-controller">How to use the improved MPC controller?</h2>
+<p>First, you should set up the co-simulation environment according to the setup doc: <a href="../GettingStarted/">Getting Started</a>.</p>
+<p>Then, replace the following files in <a href="https://github.com/ApolloAuto/apollo/tree/v8.0.0">Apollo 8.0</a> with <a href="../carla_bridge/refined_controller/">the modified files</a> provided in this repo:</p>
+<div class="highlight"><pre><span></span><code>modules/control/conf/control_conf.pb.txt
+
+modules/control/controller/mpc_controller.cc
+
+modules/control/controller/mpc_controller.h
+</code></pre></div>
+<h2 id="specific-modifications">Specific Modifications</h2>
+<p>Compared with original Apollo 8.0 code (<a href="https://github.com/ApolloAuto/apollo/tree/v8.0.0">Apollo 8.0</a>), the modified control code made the following improvements:</p>
+<h3 id="optimized-controller-configuration">Optimized controller configuration</h3>
+<div class="highlight"><pre><span></span><code>modules/control/conf/control_conf.pb.txt
+</code></pre></div>
+<p>The above file is the key configuration file for setting up the controller, including the relation of <strong>how the acceleration can be transformed to throttle or brake signal</strong>. However, the <a href="https://github.com/ApolloAuto/apollo/blob/v8.0.0/modules/control/conf/control_conf.pb.txt">original configuration</a> has several bugs including the too low acceleration, incorrect acc-to-throttle mapping, etc.</p>
+<h3 id="optimized-mpc-controller">Optimized MPC controller</h3>
+<div class="highlight"><pre><span></span><code>modules/control/controller/mpc_controller.cc
+
+modules/control/controller/mpc_controller.h
+</code></pre></div>
+<p>The above file is the implementation of the Model Predicted Control (MPC) in Apollo, which is an advanced controller. Several bugs have been discovered in the <a href="https://github.com/ApolloAuto/apollo/blob/v8.0.0/modules/control/controller/mpc_controller.cc">original MPC controller</a>, and they were fixed in this repo. These bugs include the inconsistent choice of planning point, lack of look-ahead time for planning query, redundant feedback on final control signal, etc.</p>
+<h3 id="detailed-bug-description">Detailed bug description</h3>
+<p>If you are interested, the following page can be helpful for understanding the Apollo controller (It is Apollo 9.0, but key ideas are identical to 8.0).</p>
+<p><a href="https://github.com/ApolloAuto/apollo/blob/master/modules/control/control_component/README_cn.md">Apollo Control Module Introduction</a></p>
+<p>Following are the detailed report of discoverd bugs:</p>
+<p><a href="https://github.com/guardstrikelab/carla_apollo_bridge/issues/159">Bugs</a></p>
+<h2 id="how-to-tune-the-controller-by-yourself">How to tune the controller by yourself?</h2>
+<p>Due to the complexity of this co-simulation (e.g, complexity of the Apollo ADS, complex dynamics in Carla), the current controller is still far from being perfect. If you find the controller unsatisfying, you are encouraged to tune the controller as well. Following are some suggestions:</p>
+<ol>
+<li>
+<p>Directly tune the <a href="https://github.com/guardstrikelab/carla_apollo_bridge/blob/a54a4b10f6c0aa0c27b0b39f45a40d039f5fdbd0/carla_bridge/actor/ego_vehicle.py#L57">percentage</a> of the steering signal that is actually applied by Carla. By default, the left turn and right turn signal is tuned with 70% and 85% weight, respectively (the default steer signal tends to overshoot at turns).</p>
+</li>
+<li>
+<p>Modify the configuration file (<a href="https://github.com/ApolloAuto/apollo/blob/v8.0.0/modules/control/conf/control_conf.pb.txt"><em>control_conf.pb.txt</em></a>) based on your experimental results.</p>
+</li>
+<li>
+<p>Try different controllers: change <strong>active_controllers</strong> in <a href="https://github.com/ApolloAuto/apollo/blob/v8.0.0/modules/control/conf/control_conf.pb.txt"><em>control_conf.pb.txt</em></a> from <em>MPC_CONTROLLER</em> to <em>LAT_CONTROLLER</em>, <em>LON_CONTROLLER</em>, then Apollo will apply MPC controller instead.</p>
+</li>
+<li>
+<p>Modify the controller code (e.g., fixing more bugs which you find). These codes include <a href="https://github.com/PhilWallace/apollo-8.0.0_control_opt/blob/main/modules/control/controller/lat_controller.cc">lat_controller.cc</a>, <a href="https://github.com/PhilWallace/apollo-8.0.0_control_opt/blob/main/modules/control/controller/lon_controller.cc">lon_controller.cc</a>, <a href="https://github.com/PhilWallace/apollo-8.0.0_control_opt/blob/main/modules/control/controller/mpc_controller.cc">mpc_controller.cc</a></p>
+</li>
+</ol>
+<h2 id="challenges-and-future-works">Challenges and future works</h2>
+<p>It is very challenging to get a good controller in co-simulation. The Apollo code can be buggy, not to mention the implementation problems and new challenes brought by Carla. It would be very helpful for the community if you can also contribute to this co-simulation project.</p></div>
+</div>
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href=".." title="入门"><span class="icon icon-circle-arrow-left"></span> 前一页</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>OpenHUTB 版权所有 © 2026</p>
+</div>
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
+</span>
+<span><a href=".." style="color: #fcfcfc">« 前一页</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script>
+<script src="../js/umlconvert.js"></script>
+<script src="../search/main.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
