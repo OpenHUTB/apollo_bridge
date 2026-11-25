@@ -1,5 +1,7 @@
 # Deployment Introduction
 
+> **中文文档导航**：本文保留了早期上游仓库的多容器网络拓扑图作架构参考。如需可复现的完整部署步骤、脚本路径说明（CARLA Compose 文件位于 `carla_scripts/`，当前仓库已无 `docker/` 目录）及 Dreamview 交互教程，请直接参阅 [入门与完整部署指南](GettingStarted.md) 与 [常见问题与排障手册](Troubleshooting.md)。
+
 To make the Carla Apollo Bridge work properly, you need to start the following three containers:
 
 **Apollo container**

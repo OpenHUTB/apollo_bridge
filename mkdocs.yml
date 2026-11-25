@@ -58,8 +58,11 @@ copyright: OpenHUTB 版权所有 &copy; {year}
 
 
 nav:
-- 入门: 'index.md'
-- 示例视频: 'RefinedController.md'
+- 主页: 'index.md'
+- 入门与完整部署: 'GettingStarted.md'
+- 常见问题排查: 'Troubleshooting.md'
+- 示例视频与控制器: 'RefinedController.md'
+- 网络与部署原理: 'deployment_introduction.md'
 
 # - mdx_math 用于行内公式显示
 markdown_extensions:
