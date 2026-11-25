@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>GettingStarted - 仿真桥</title>
+<title>入门与完整部署 - 仿真桥</title>
 <link href="../css/theme.css" rel="stylesheet"/>
 <link href="../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "GettingStarted";
+        var mkdocs_page_name = "\u5165\u95e8\u4e0e\u5b8c\u6574\u90e8\u7f72";
         var mkdocs_page_input_path = "GettingStarted.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,11 +37,79 @@
 </div>
 <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="..">入门</a>
+<li class="toctree-l1"><a class="reference internal" href="..">主页</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">入门与完整部署</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#1-系统定位与数据流架构">1. 系统定位与数据流架构</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#双向-cyberrt-topic-对照表">双向 CyberRT Topic 对照表</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#2-前置软硬件环境准备">2. 前置软硬件环境准备</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#3-部署与编译-apollo-v800">3. 部署与编译 Apollo v8.0.0</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#31-克隆代码仓库">3.1 克隆代码仓库</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#32-拉取开发镜像并启动容器">3.2 拉取开发镜像并启动容器</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#33-部署-carla_bridge-依赖与高精地图">3.3 部署 carla_bridge 依赖与高精地图</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#34-精简模块化编译-apollo">3.4 精简模块化编译 Apollo</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#4-关键配置与必做补丁确保控制器dreamview-与待命状态全部正确">4. 关键配置与必做补丁（确保控制器、Dreamview 与待命状态全部正确）</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#41-合入调优控制器并修复头文件与参数">4.1 合入调优控制器并修复头文件与参数</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#42-配置默认地图与精简-hmi-模式彻底消除安全模式红框">4.2 配置默认地图与精简 HMI 模式（彻底消除安全模式红框）</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#5-部署与启动-carla-0914两种方式">5. 部署与启动 CARLA 0.9.14（两种方式）</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#方式-a宿主机原生运行-carla-0914推荐免去镜像拉取限速与容器显卡映射问题">方式 A：宿主机原生运行 CARLA 0.9.14（推荐，免去镜像拉取限速与容器显卡映射问题）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#方式-b使用-docker-运行-carla-0914">方式 B：使用 Docker 运行 CARLA 0.9.14</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#6-联合仿真标准启动与交互操作手册sop">6. 联合仿真标准启动与交互操作手册（SOP）</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#61-四步启动完整环境">6.1 四步启动完整环境</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#62-dreamview-网页交互步骤">6.2 Dreamview 网页交互步骤</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#7-状态巡检与安全停机">7. 状态巡检与安全停机</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#71-在线状态检查命令">7.1 在线状态检查命令</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#72-实测闭环性能基准">7.2 实测闭环性能基准</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#73-安全停止全部进程注意---pidhost-保护">7.3 安全停止全部进程（注意 --pid=host 保护）</a>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">示例视频</a>
+<li class="toctree-l1"><a class="reference internal" href="../Troubleshooting/">常见问题排查</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">示例视频与控制器</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../deployment_introduction/">网络与部署原理</a>
 </li>
 </ul>
 </div>
@@ -56,7 +124,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
-<li class="breadcrumb-item active">GettingStarted</li>
+<li class="breadcrumb-item active">入门与完整部署</li>
 <li class="wy-breadcrumbs-aside">
 <a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/GettingStarted.md"> 编辑页面</a>
 </li>
@@ -65,166 +133,630 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<div><h2 id="入门">入门</h2>
-<h3 id="prerequisites">Prerequisites</h3>
-<p>We will run Carla and Apollo in docker. Furthermore, NVIDIA Container Toolkit is needed. You can refer to the following link to install NVIDIA Container Toolkit:
-* https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html</p>
-<p>Alternatively, simply perform the following steps：</p>
-<ul>
-<li>docker</li>
-</ul>
-<p></p><div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>docker.io
-</code></pre></div>
-* NVIDIA Container Toolkit
-<p></p><div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://get.docker.com<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span><span class="se">\</span>
-<span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>--now<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nv">distribution</span><span class="o">=</span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="p">;</span><span class="nb">echo</span><span class="w"> </span><span class="nv">$ID$VERSION_ID</span><span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://nvidia.github.io/libnvidia-container/gpgkey<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span>-o<span class="w"> </span>/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>-L<span class="w"> </span>https://nvidia.github.io/libnvidia-container/<span class="nv">$distribution</span>/libnvidia-container.list<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
-<span class="w">          </span>sed<span class="w"> </span><span class="s1">'s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
-<span class="w">          </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/nvidia-container-toolkit.list
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nvidia-docker2
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>docker
-</code></pre></div>
-<ul>
-<li>docker-compose</li>
-</ul>
-<div class="highlight"><pre><span></span><code>     sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-</code></pre></div>
-<ul>
-<li>Change File Permission:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/usr/local/bin/docker-compose<span class="w"> </span>
+<div><h1 id="apollo-v800--carla-0914-联合仿真入门与完整部署指南">Apollo v8.0.0 + CARLA 0.9.14 联合仿真入门与完整部署指南</h1>
+<p>本文档面向 <strong>Ubuntu 22.04（x86_64）</strong> 物理机环境，完整梳理了从零部署、编译、配置调优到跑通 <strong>CARLA 0.9.14 + <code>apollo_bridge</code>（<code>carla_bridge</code>）+ Apollo <code>v8.0.0</code></strong> 闭环自动驾驶联合仿真的全部步骤，并包含实际验证过程中踩过的全部坑点与对应修复方案。</p>
+<blockquote>
+<p>本指南基于仓库验证基线（<a href="https://github.com/ApolloAuto/apollo/tree/v8.0.0">Apollo <code>v8.0.0</code></a> + <a href="https://github.com/carla-simulator/carla/tree/0.9.14">CARLA <code>0.9.14</code></a>）编写。常见问题与报错排查请参阅 <a href="../Troubleshooting/">常见问题与排障手册</a>，控制器调优说明请参阅 <a href="../RefinedController/">改进控制器与示例视频</a>。</p>
+</blockquote>
+<hr/>
+<h2 id="1-系统定位与数据流架构">1. 系统定位与数据流架构</h2>
+<p><code>carla_bridge</code> 运行在 Apollo 容器的 CyberRT 环境中，同时作为 CARLA 的 Python RPC 客户端（默认连接 <code>172.17.0.1:2000</code>）与 Apollo 的 CyberRT 节点（<code>cyber_bridge_node</code>），以 <code>synchronous_mode: True</code>、<code>fixed_delta_seconds: 0.05</code>（20 Hz）同步推进仿真并双向翻译数据与控制指令：</p>
+<div class="mermaid">flowchart LR
+    subgraph Host["宿主机 / CARLA 仿真端"]
+        CARLA["CARLA 0.9.14 (CarlaUE4)\nRPC :2000 | Town01 | Synchronous"]
+    end
+
+    subgraph Apollo["Apollo v8.0.0 容器 (apollo_dev_$USER, --net host)"]
+        BRIDGE["carla_bridge/main.py\n(cyber_bridge_node)"]
+        ROUTING["Routing\n(routing.dag)"]
+        PRED["Prediction\n(prediction.dag)"]
+        PLAN["Planning\n(planning.dag)"]
+        CTRL["Control (Refined MPC)\n(control.dag)"]
+        STORY["Storytelling\n(storytelling.dag)"]
+        DV["Dreamview (:8888)\n+ Monitor"]
+    end
+
+    CARLA -- "World Tick &amp; 传感器流\n(172.17.0.1:2000)" --&gt; BRIDGE
+    BRIDGE -- "/clock, /tf\n/apollo/canbus/chassis\n/apollo/localization/pose\n/apollo/perception/*" --&gt; PRED
+    BRIDGE -- "定位 / 底盘 / 障碍物 / 红绿灯真值" --&gt; PLAN
+    BRIDGE -- "定位 / 底盘" --&gt; CTRL
+    BRIDGE -- "车辆位姿 / 传感器 / 障碍物" --&gt; DV
+    DV -- "/apollo/routing_request" --&gt; ROUTING
+    ROUTING -- "/apollo/routing_response" --&gt; PLAN
+    PRED -- "/apollo/prediction" --&gt; PLAN
+    PLAN -- "/apollo/planning (ADCTrajectory)" --&gt; CTRL
+    CTRL -- "/apollo/control (ControlCommand)" --&gt; BRIDGE
+    BRIDGE -- "carla.VehicleControl\n(含转向比例缩放)" --&gt; CARLA
+</div>
+<h3 id="双向-cyberrt-topic-对照表">双向 CyberRT Topic 对照表</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Topic 名称</th>
+<th style="text-align: left;">方向</th>
+<th style="text-align: left;">Protobuf 消息类型</th>
+<th style="text-align: left;">源码位置</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>/clock</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>cyber.proto.clock_pb2.Clock</code></td>
+<td style="text-align: left;"><code>carla_bridge/main.py</code></td>
+<td style="text-align: left;">仿真同步时钟</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/canbus/chassis</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>Chassis</code></td>
+<td style="text-align: left;"><code>carla_bridge/actor/ego_vehicle.py</code></td>
+<td style="text-align: left;">车速、油门/刹车/转向反馈、默认发布 <code>COMPLETE_AUTO_DRIVE</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/localization/pose</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>LocalizationEstimate</code></td>
+<td style="text-align: left;"><code>carla_bridge/actor/ego_vehicle.py</code></td>
+<td style="text-align: left;">自车 ENU 位姿、速度、角速度、加速度真值</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/localization/msf_status</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>LocalizationStatus</code></td>
+<td style="text-align: left;"><code>carla_bridge/actor/ego_vehicle.py</code></td>
+<td style="text-align: left;">定位状态消息</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/tf</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>TransformStampeds</code></td>
+<td style="text-align: left;"><code>carla_bridge/actor/ego_vehicle.py</code></td>
+<td style="text-align: left;"><code>world -&gt; localization</code> 坐标变换</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/perception/obstacles</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>PerceptionObstacles</code></td>
+<td style="text-align: left;"><code>carla_bridge/sensor/object_sensor.py</code></td>
+<td style="text-align: left;">仿真世界障碍物真值</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/perception/traffic_light</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>TrafficLightDetection</code></td>
+<td style="text-align: left;"><code>carla_bridge/sensor/traffic_lights_sensor.py</code></td>
+<td style="text-align: left;">红绿灯状态真值</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/sensor/camera/&lt;id&gt;/image*</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>Image</code> / <code>CompressedImage</code></td>
+<td style="text-align: left;"><code>carla_bridge/sensor/camera.py</code></td>
+<td style="text-align: left;">前视相机（默认 <code>front_6mm</code>、<code>front_12mm</code>）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/sensor/&lt;id&gt;/compensator/PointCloud2</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>PointCloud</code></td>
+<td style="text-align: left;"><code>carla_bridge/sensor/lidar.py</code></td>
+<td style="text-align: left;">128 线激光雷达点云（默认 <code>lidar128</code>）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/sensor/radar/front</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>ContiRadar</code></td>
+<td style="text-align: left;"><code>carla_bridge/sensor/radar.py</code></td>
+<td style="text-align: left;">毫米波雷达目标</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/sensor/gnss/*</code></td>
+<td style="text-align: left;">桥 → Apollo</td>
+<td style="text-align: left;"><code>GnssBestPose</code> / <code>Gps</code> / <code>Heading</code> / <code>InsStat</code> / <code>CorrectedImu</code></td>
+<td style="text-align: left;"><code>carla_bridge/sensor/gnss.py</code>、<code>imu.py</code></td>
+<td style="text-align: left;">GNSS 与 IMU 数据</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/apollo/control</code></td>
+<td style="text-align: left;">Apollo → 桥</td>
+<td style="text-align: left;"><code>ControlCommand</code></td>
+<td style="text-align: left;"><code>carla_bridge/actor/ego_vehicle.py</code></td>
+<td style="text-align: left;">接收 Apollo 油门/刹车/转向；内部对左转乘 <code>0.85</code>、右转乘 <code>0.7</code> 抑制转向过冲</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>关键原则</strong>：由于 <code>carla_bridge</code> 直接发布定位真值与感知真值（<code>/apollo/localization/pose</code>、<code>/apollo/perception/*</code>），联调时<strong>切勿</strong>开启 Apollo 的 MSF <code>Localization</code>、相机/雷达 <code>Perception</code>、<code>Canbus</code> 或传感驱动模块，只需启动 <strong><code>Routing</code>、<code>Prediction</code>、<code>Planning</code>、<code>Control</code>、<code>Storytelling</code></strong> 即可。</p>
+</blockquote>
+<hr/>
+<h2 id="2-前置软硬件环境准备">2. 前置软硬件环境准备</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">组件</th>
+<th style="text-align: left;">推荐配置</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>操作系统</strong></td>
+<td style="text-align: left;">Ubuntu 20.04 / 22.04（x86_64）</td>
+<td style="text-align: left;">若使用 Wayland 会话，需留意混合显卡驱动与 Vulkan ICD 选择</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>磁盘空间</strong></td>
+<td style="text-align: left;">可用空间 <strong>&gt;= 60 GiB</strong></td>
+<td style="text-align: left;">Apollo 开发镜像（解压约 23 GiB）+ 源码与局部编译产物 + CARLA 0.9.14（解压约 16 GiB）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>内存 + Swap</strong></td>
+<td style="text-align: left;">物理内存 <strong>&gt;= 14 GiB</strong> + Swap <strong>&gt;= 16 GiB</strong></td>
+<td style="text-align: left;">合计建议 &gt;= 30 GiB，防止 Bazel 编译时 OOM</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Docker</strong></td>
+<td style="text-align: left;">Docker + Docker Compose v2（<code>docker compose</code>）</td>
+<td style="text-align: left;">建议将当前用户加入 <code>docker</code> 用户组（免 <code>sudo</code> 执行 <code>docker</code>）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>GPU 支持</strong></td>
+<td style="text-align: left;">NVIDIA GPU + <code>nvidia-container-toolkit</code></td>
+<td style="text-align: left;">若使用 RTX 40 系列（Compute Capability <code>8.9</code>）配合 Apollo 8.0 默认 CUDA 11.1 容器，需采用 CPU 编译以规避不支持 <code>compute_89</code> 的编译失败</td>
+</tr>
+</tbody>
+</table>
+<p>安装 Docker 与 NVIDIA Container Toolkit（如已就绪可跳过）：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 安装 Docker Engine 与 Docker Compose 插件</span>
+curl<span class="w"> </span>-fsSL<span class="w"> </span>https://get.docker.com<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>docker
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w">   </span><span class="c1"># 完成后重新登录终端生效</span>
+
+<span class="c1"># 2. 安装 NVIDIA Container Toolkit 并重启 Docker</span>
+<span class="nv">distribution</span><span class="o">=</span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">ID</span><span class="si">}${</span><span class="nv">VERSION_ID</span><span class="si">}</span><span class="s2">"</span><span class="k">)</span>
+curl<span class="w"> </span>-fsSL<span class="w"> </span>https://nvidia.github.io/libnvidia-container/gpgkey<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span>-o<span class="w"> </span>/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl<span class="w"> </span>-s<span class="w"> </span>-L<span class="w"> </span><span class="s2">"https://nvidia.github.io/libnvidia-container/</span><span class="si">${</span><span class="nv">distribution</span><span class="si">}</span><span class="s2">/libnvidia-container.list"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">'s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nvidia-container-toolkit
+sudo<span class="w"> </span>nvidia-ctk<span class="w"> </span>runtime<span class="w"> </span>configure<span class="w"> </span>--runtime<span class="o">=</span>docker
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>docker
 </code></pre></div>
 <blockquote>
-<p>Apply executable permissions to the standalone binary in the target path for the installation.
-Test and execute compose commands using docker-compose.
-<strong>Note:</strong>
-If the command docker-compose fails after installation, check your path. You can also create a symbolic link to /usr/bin or any other directory in your path. For example:</p>
+<p><strong>网络提示</strong>：若终端环境设置了 <code>http_proxy</code> / <code>https_proxy</code> 且在 <code>git clone</code> 或拉取镜像时出现 <code>gnutls_handshake() failed</code> / TLS <code>EOF</code> 断流，可改用 <code>env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY</code> 直连重试。</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="w"> </span>sudo<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/usr/local/bin/docker-compose<span class="w"> </span>/usr/bin/docker-compose
-</code></pre></div>
-<h3 id="build-and-run-apollo">Build And Run Apollo</h3>
-<ul>
-<li>
-<p>Refer to this link：
-  <br/> https://github.com/ApolloAuto/apollo/blob/master/docs/01_Installation%20Instructions/apollo_software_installation_guide.md</p>
-</li>
-<li>
-<p>Clone apollo v8.0.0 </p>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="c1"># Using SSH</span>
-git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>v8.0.0<span class="w"> </span>git@github.com:ApolloAuto/apollo.git
+<hr/>
+<h2 id="3-部署与编译-apollo-v800">3. 部署与编译 Apollo v8.0.0</h2>
+<p>下文用 <code>&lt;WORKDIR&gt;</code> 代指工作父目录（例如 <code>$HOME/workspace</code>），用 <code>apollo_dev_$USER</code> 代指容器名称。</p>
+<h3 id="31-克隆代码仓库">3.1 克隆代码仓库</h3>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>&lt;WORKDIR&gt;<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>&lt;WORKDIR&gt;
 
-<span class="c1">#Using HTTPS</span>
-git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>v8.0.0<span class="w"> </span>https://github.com/ApolloAuto/apollo.git
+<span class="c1"># 1. 克隆本仿真桥仓库</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/OpenHUTB/apollo_bridge.git<span class="w"> </span>&lt;WORKDIR&gt;/apollo_bridge
+
+<span class="c1"># 2. 浅克隆 Apollo v8.0.0 源码（仅拉取 v8.0.0 tag，显著节省空间与时间）</span>
+env<span class="w"> </span>-u<span class="w"> </span>http_proxy<span class="w"> </span>-u<span class="w"> </span>https_proxy<span class="w"> </span>-u<span class="w"> </span>HTTP_PROXY<span class="w"> </span>-u<span class="w"> </span>HTTPS_PROXY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--branch<span class="w"> </span>v8.0.0<span class="w"> </span>https://github.com/ApolloAuto/apollo.git<span class="w"> </span>&lt;WORKDIR&gt;/apollo
+</code></pre></div>
+<h3 id="32-拉取开发镜像并启动容器">3.2 拉取开发镜像并启动容器</h3>
+<p>Apollo 官方 <code>bash docker/scripts/dev_start.sh</code> 默认会额外拉取 Sunnyvale 地图与 8 个感知/音频模型大容量数据卷（易触发 Docker Hub TLS EOF 且占用数 GB 磁盘）。在仿真实战中这些地图/模型卷并不需要，推荐直接拉取基础开发镜像并用等效参数创建容器（保留 <code>--net host</code>、<code>--pid=host</code> 与 <code>--shm-size 2G</code>）：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 拉取 Apollo v8.0.0 开发镜像（压缩约 7.75 GB，解压约 23.17 GB）</span>
+docker<span class="w"> </span>pull<span class="w"> </span>apolloauto/apollo:dev-x86_64-18.04-20221124_1708
+
+<span class="c1"># 2. 创建必要目录并启动容器 apollo_dev_$USER</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>&lt;WORKDIR&gt;/apollo/.cache<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.apollo"</span>
+docker<span class="w"> </span>run<span class="w"> </span>-itd<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gpus<span class="w"> </span>all<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--privileged<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DISPLAY</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">DISPLAY</span><span class="k">:-</span><span class="p">:</span><span class="nv">0</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DOCKER_USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DOCKER_USER_ID</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DOCKER_GRP</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="w"> </span>-n<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DOCKER_GRP_ID</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">DOCKER_IMG</span><span class="o">=</span><span class="s2">"apolloauto/apollo:dev-x86_64-18.04-20221124_1708"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">USE_GPU_HOST</span><span class="o">=</span><span class="s2">"1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>all<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">NVIDIA_DRIVER_CAPABILITIES</span><span class="o">=</span>compute,video,graphics,utility<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.apollo:</span><span class="nv">$HOME</span><span class="s2">/.apollo"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"&lt;WORKDIR&gt;/apollo:/apollo"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/dev:/dev<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/media:/media<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/tmp/.X11-unix:/tmp/.X11-unix:rw<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/etc/localtime:/etc/localtime:ro<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/usr/src:/usr/src<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/lib/modules:/lib/modules<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/dev/null:/dev/raw1394<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--net<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-w<span class="w"> </span>/apollo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--add-host<span class="w"> </span><span class="s2">"in-dev-docker:127.0.0.1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--add-host<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">:127.0.0.1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hostname<span class="w"> </span><span class="s2">"in-dev-docker"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--shm-size<span class="w"> </span><span class="s2">"2G"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--pid<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>apolloauto/apollo:dev-x86_64-18.04-20221124_1708<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/bin/bash
+
+<span class="c1"># 3. 初始化容器内用户与 Bazel 配置（以 root 跑一次用户映射，再用普通用户初始化）</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span>root<span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'/apollo/scripts/docker_start_user.sh'</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'cd /apollo &amp;&amp; ./apollo.sh config -n'</span>
+</code></pre></div>
+<blockquote>
+<p>若网络畅通且磁盘充裕，也可使用原生 <code>cd &lt;WORKDIR&gt;/apollo &amp;&amp; bash docker/scripts/dev_start.sh -f -y</code>（切勿盲目加 <code>-g cn</code> 镜像源，部分环境下百度云镜像可能 TLS EOF），注意 <code>-g</code> 若未配置或卡卷可退回上述等效 <code>docker run</code>。</p>
+</blockquote>
+<h3 id="33-部署-carla_bridge-依赖与高精地图">3.3 部署 <code>carla_bridge</code> 依赖与高精地图</h3>
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>-r<span class="w"> </span>&lt;WORKDIR&gt;/apollo_bridge/carla_bridge<span class="w"> </span>&lt;WORKDIR&gt;/apollo/modules/carla_bridge
+
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  cd /apollo/modules/carla_bridge</span>
+<span class="s1">  chmod +x install.sh</span>
+<span class="s1">  ./install.sh</span>
+<span class="s1">'</span>
+</code></pre></div>
+<p><code>install.sh</code> 会自动完成：
+1. 将 <code>carla_town01</code>、<code>carla_town02</code>、<code>carla_town04</code>、<code>carla_town07</code>、<code>carla_town10hd</code> 5 张高精地图复制到 <code>/apollo/modules/map/data/</code>；
+2. 安装 Python 依赖（<code>loguru==0.7.0</code>、<code>networkx</code>、<code>transforms3d==0.4.1</code>）到容器普通用户目录 <code>~/.local/lib/python3.6/site-packages</code>；
+3. 向容器内 <code>~/.bashrc</code> 写入 <code>PYTHONPATH</code>（含 <code>/apollo/modules/carla_bridge/carla_api/carla-0.9.14-py3.7-linux-x86_64.egg</code>）。</p>
+<blockquote>
+<p><strong>Python 3.6.9 兼容说明</strong>：Apollo <code>v8.0.0</code> 开发镜像默认使用 Python <code>3.6.9</code>，经实测 <code>carla-0.9.14-py3.7-linux-x86_64.egg</code> 中的 <code>libcarla.cpython-37m-x86_64-linux-gnu.so</code> 在容器内可直接 <code>import carla</code> 并稳定连接 CARLA 0.9.14。后续必须保持以 <strong><code>-u "$USER" -e HOME="/home/${USER}"</code></strong>（而非 <code>root</code>）启动 <code>carla_bridge</code>，否则会找不到 <code>transforms3d</code>。</p>
+</blockquote>
+<h3 id="34-精简模块化编译-apollo">3.4 精简模块化编译 Apollo</h3>
+<p>全量编译包含 <code>perception</code> 大模型与全部单元测试，极易触发 <strong>OOM / 爆盘</strong>；此外，RTX 40 系列（<code>compute_89</code>）在 Apollo 8.0 默认 CUDA 11.1 环境下会报错。因此推荐采用 <code>--config=cpu</code> 禁用冗余磁盘缓存（<code>--disk_cache=</code>），按需仅编译联合仿真所需核心目标（实测 <code>3492</code> actions，内存与磁盘可控）：</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  cd /apollo &amp;&amp; source /apollo/cyber/setup.bash</span>
+<span class="s1">  bazel build --config=cpu --disk_cache= --copt=-mavx2 --host_copt=-mavx2 --jobs=6 --local_ram_resources=8192 \</span>
+<span class="s1">    //cyber/mainboard:mainboard \</span>
+<span class="s1">    //cyber/tools/... \</span>
+<span class="s1">    //cyber/python/cyber_py3/... \</span>
+<span class="s1">    //cyber/python/internal:_cyber_wrapper.so \</span>
+<span class="s1">    //cyber/python/internal:_cyber_time_wrapper.so \</span>
+<span class="s1">    //cyber/python/internal:_cyber_timer_wrapper.so \</span>
+<span class="s1">    //cyber/python/internal:_cyber_parameter_wrapper.so \</span>
+<span class="s1">    //cyber/python/internal:_cyber_record_wrapper.so \</span>
+<span class="s1">    //cyber/proto/... \</span>
+<span class="s1">    //modules/common_msgs/... \</span>
+<span class="s1">    //modules/data/proto/... \</span>
+<span class="s1">    //modules/dreamview:dreamview \</span>
+<span class="s1">    //modules/monitor:libmonitor.so \</span>
+<span class="s1">    //modules/routing:librouting_component.so \</span>
+<span class="s1">    //modules/localization/rtk:librtk_localization_component.so \</span>
+<span class="s1">    //modules/localization/msf:libmsf_localization_component.so \</span>
+<span class="s1">    //modules/prediction:libprediction_component.so \</span>
+<span class="s1">    //modules/planning:libplanning_component.so \</span>
+<span class="s1">    //modules/control:libcontrol_component.so \</span>
+<span class="s1">    //modules/transform:libstatic_transform_component.so \</span>
+<span class="s1">    //modules/storytelling:libstorytelling_component.so</span>
+<span class="s1">'</span>
+</code></pre></div>
+<blockquote>
+<p>若使用旧架构 NVIDIA GPU（如 Turing/Ampere，CUDA 11.1 支持其算力）且磁盘与内存充裕，也可按原生方式执行 <code>./apollo.sh build_gpu</code>。</p>
+</blockquote>
+<hr/>
+<h2 id="4-关键配置与必做补丁确保控制器dreamview-与待命状态全部正确">4. 关键配置与必做补丁（确保控制器、Dreamview 与待命状态全部正确）</h2>
+<p>在编译与运行过程中，仓库原始配置在 Apollo <code>v8.0.0</code> 下存在多处必须修改的兼容问题，请务必在 <code>&lt;WORKDIR&gt;/apollo</code> 中按以下 7 步逐一落实：</p>
+<h3 id="41-合入调优控制器并修复头文件与参数">4.1 合入调优控制器并修复头文件与参数</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 合入仓库自带的 refined_controller（如计划重编译后再修改则一起执行）</span>
+cp<span class="w"> </span>&lt;WORKDIR&gt;/apollo_bridge/carla_bridge/refined_controller/control_conf.pb.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>&lt;WORKDIR&gt;/apollo/modules/control/conf/control_conf.pb.txt
+cp<span class="w"> </span>&lt;WORKDIR&gt;/apollo_bridge/carla_bridge/refined_controller/mpc_controller.cc<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>&lt;WORKDIR&gt;/apollo/modules/control/controller/mpc_controller.cc
+cp<span class="w"> </span>&lt;WORKDIR&gt;/apollo_bridge/carla_bridge/refined_controller/mpc_controller.h<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>&lt;WORKDIR&gt;/apollo/modules/control/controller/mpc_controller.h
 </code></pre></div>
 <ol>
-<li>Build Apollo</li>
+<li>
+<p><strong>修正 <code>mpc_controller.h</code> 第 29 行头文件路径</strong>（原文件沿用了 Apollo 6/7 路径，v8.0.0 编译会报找不到文件）：
+   修改 <code>&lt;WORKDIR&gt;/apollo/modules/control/controller/mpc_controller.h</code>：
+   </p><div class="highlight"><pre><span></span><code><span class="c1">// 原内容：#include "modules/common/configs/proto/vehicle_config.pb.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"modules/common_msgs/config_msgs/vehicle_config.pb.h"</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>修复 Control 永久急停锁死 &amp; 待命/到站 15.7% 蠕行问题</strong>：
+   修改 <code>&lt;WORKDIR&gt;/apollo/modules/control/conf/control_conf.pb.txt</code> 两处：</p>
+</li>
+<li>在顶部 <code>enable_input_timestamp_check: false</code> 下方添加：
+     <div class="highlight"><pre><span></span><code><span class="n">enable_persistent_estop</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+</code></pre></div>
+     &gt; <strong>原因</strong>：<code>control_conf.proto</code> 默认 <code>enable_persistent_estop: true</code>。下发路由前空轨迹或 <code>not_ready</code> 状态会让 <code>estop_</code> 永久锁死在 <code>brake = 50, throttle = 0</code>，即使后续下发合法路线也无法起步。</li>
+<li>
+<p>在文件后半段 <code>mpc_controller_conf { ... }</code> 中（约第 9383 行），将 <code>standstill_acceleration: -0.3</code> 改为 <code>-1.0</code>：
+     </p><div class="highlight"><pre><span></span><code><span class="n">mpc_controller_conf</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="o">...</span>
+<span class="w">  </span><span class="n">max_lateral_acceleration</span><span class="o">:</span><span class="w"> </span><span class="mf">5.0</span>
+<span class="w">  </span><span class="n">standstill_acceleration</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0</span>
+</code></pre></div>
+     &gt; <strong>原因</strong>：<code>mpc_controller_conf.calibration_table</code> 在 <code>speed: 0.0</code> 处直接从 <code>(acceleration: -0.48, command: -2.82)</code> 跳变到 <code>(acceleration: 0.09, command: 30.06)</code>。取 <code>-0.3</code> 时线性插值会得到正值 <code>+7.56</code>，再经 <code>vehicle_param_.throttle_deadzone()</code>（<code>15.7</code>）钳位后输出 <code>15.7%</code> 油门，导致车辆到达终点停车时继续向前滑行蠕动；设为 <code>-1.0</code> 后插值为负，稳稳输出制动（<code>brake &gt;= 14.5%</code>）。
+</li>
+<li>
+<p><strong>在 <code>control_component.cc</code> 中增加 <code>not_ready</code> 制动保持</strong>：
+   在 <code>&lt;WORKDIR&gt;/apollo/modules/control/control_component.cc</code> 的 <code>if (local_view_.trajectory().trajectory_point().empty()) { ... }</code> 判断后（约第 212 行）追加：
+   </p><div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">local_view_</span><span class="p">.</span><span class="n">trajectory</span><span class="p">().</span><span class="n">decision</span><span class="p">().</span><span class="n">main_decision</span><span class="p">().</span><span class="n">has_not_ready</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">AWARN_EVERY</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"planning is not ready."</span><span class="p">;</span>
+<span class="w">  </span><span class="n">estop_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="n">estop_reason_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"estop for planning not ready"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p><strong>原因</strong>：无路由待命时 Planning 发出的 30 点静态轨 <code>trajectory_type</code> 为 <code>UNKNOWN (0)</code>，会绕过 <code>mpc_controller.cc</code> 中仅对 <code>NORMAL</code> 生效的停驻保护并触发 <code>15.7%</code> 蠕行。加入上述逻辑并配合 <code>enable_persistent_estop: false</code>，待命期可靠刹停（<code>drift = 0.0000 m, brake = 50.0</code>），下发路由后首帧即刻松刹起步。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>增量重编 Control 组件</strong>：
+   </p><div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  cd /apollo &amp;&amp; source /apollo/cyber/setup.bash</span>
+<span class="s1">  bazel build --config=cpu --disk_cache= --copt=-mavx2 --host_copt=-mavx2 --jobs=6 --local_ram_resources=8192 \</span>
+<span class="s1">    //modules/control:libcontrol_component.so</span>
+<span class="s1">'</span>
+</code></pre></div>
+</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>apollo
-<span class="nb">echo</span><span class="w"> </span><span class="s2">"export APOLLO_ROOT_DIR=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
-</code></pre></div>
-<p>Then, run:</p>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/apollo/.cache
-bash<span class="w"> </span>docker/scripts/dev_start.sh
-</code></pre></div>
-<p>Upon successful execution, you will see the following message</p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="w"> </span>OK<span class="w"> </span><span class="o">]</span><span class="w"> </span>Congratulations!<span class="w"> </span>You<span class="w"> </span>have<span class="w"> </span>successfully<span class="w"> </span>finished<span class="w"> </span>setting<span class="w"> </span>up<span class="w"> </span>Apollo<span class="w"> </span>Dev<span class="w"> </span>Environment.
-<span class="o">[</span><span class="w"> </span>OK<span class="w"> </span><span class="o">]</span><span class="w"> </span>To<span class="w"> </span>login<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>newly<span class="w"> </span>created<span class="w"> </span>apollo_dev_lei<span class="w"> </span>container,<span class="w"> </span>please<span class="w"> </span>run<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>command:
-<span class="o">[</span><span class="w"> </span>OK<span class="w"> </span><span class="o">]</span><span class="w">   </span>bash<span class="w"> </span>docker/scripts/dev_into.sh
-<span class="o">[</span><span class="w"> </span>OK<span class="w"> </span><span class="o">]</span><span class="w"> </span>Enjoy!
-</code></pre></div>
-<blockquote>
-<p>Above If you occured error as "ERROR: Config value 'cuda' is not defined in any .rc file",you can try </p>
-</blockquote>
-<div class="highlight"><pre><span></span><code>./apollo.sh<span class="w"> </span>config<span class="w"> </span>-n
-</code></pre></div>
-<p>Run this command to enter the container</p>
-<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>docker/scripts/dev_into.sh
-</code></pre></div>
-<p>Make the GPU version:</p>
-<div class="highlight"><pre><span></span><code>./apollo.sh<span class="w"> </span>build_gpu
-</code></pre></div>
-<p>After successful compilation, the following will be printed:</p>
-<div class="highlight"><pre><span></span><code><span class="o">==============================================</span>
-<span class="o">[</span><span class="w"> </span>OK<span class="w"> </span><span class="o">]</span><span class="w"> </span>Done<span class="w"> </span>building<span class="w"> </span>apollo.<span class="w"> </span>Enjoy!
-<span class="o">==============================================</span>
-</code></pre></div>
-<p>Run this command in the container to start Dreamview</p>
-<div class="highlight"><pre><span></span><code>./scripts/bootstrap.sh
-</code></pre></div>
-<p>Finally, open the link in your browser</p>
-<div class="highlight"><pre><span></span><code>http://localhost:8888/
-</code></pre></div>
-<h3 id="refined-controller">Refined Controller</h3>
-<p>Note that this project provides a refined MPC controller that improves the performance of the Apollo MPC controller in this co-simulation. Please refer to <a href="../RefinedController/">RefinedController.md</a> for details.</p>
-<h3 id="run-carla">Run Carla</h3>
-<ul>
-<li>Clone the carla_apollo_bridge project outside Apollo container</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="c1"># Using SSH</span>
-git<span class="w"> </span>clone<span class="w"> </span>git@github.com:guardstrikelab/carla_apollo_bridge.git
-
-<span class="c1">#Using HTTPS</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/guardstrikelab/carla_apollo_bridge.git
-</code></pre></div>
-<ul>
-<li>Pull carla image and run</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>carla_apollo_bridge
-./scripts/docker_run_carla.sh
-</code></pre></div>
-<h3 id="run-carla_apollo_bridge">Run carla_apollo_bridge</h3>
+<h3 id="42-配置默认地图与精简-hmi-模式彻底消除安全模式红框">4.2 配置默认地图与精简 HMI 模式（彻底消除安全模式红框）</h3>
 <ol>
-<li>Copy the src folder into Apollo container
-    <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>cp<span class="w"> </span>carla_bridge<span class="w"> </span>&lt;apollo_container_name&gt;:/apollo/modules/carla_bridge
+<li>
+<p><strong>设置默认启动地图为 <code>carla_town01</code></strong>：
+   编辑 <code>&lt;WORKDIR&gt;/apollo/modules/common/data/global_flagfile.txt</code>，保证末尾为单条（避免重复 <code>--map_dir</code> 堆积）：
+   </p><div class="highlight"><pre><span></span><code>--map_dir=/apollo/modules/map/data/carla_town01
+</code></pre></div>
+</li>
+<li>
+<p><strong>创建精简 5 模块 HMI 模式 <code>carla_bridge.pb.txt</code></strong>：
+   Apollo 的 <code>hmi_mode.proto</code> 默认所有模块 <code>required_for_safety: true</code>，而 <code>carla_bridge</code> 会持续发布 <code>COMPLETE_AUTO_DRIVE</code>。如果继续使用 <code>Mkz Standard Debug</code>，只要实车硬件/感知/CANBus 等 10 余个模块未开启，<code>FunctionalSafetyMonitor</code> 就会触发 <code>Storytelling triggers safe mode:</code> 红框及 <code>System fault. Auto disengage.</code> 告警。</p>
+</li>
+</ol>
+<p>新建 <code>&lt;WORKDIR&gt;/apollo/modules/dreamview/conf/hmi_modes/carla_bridge.pb.txt</code>：
+   </p><div class="highlight"><pre><span></span><code><span class="n">cyber_modules</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="s">"Routing"</span>
+<span class="w">  </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">dag_files</span><span class="o">:</span><span class="w"> </span><span class="s">"/apollo/modules/routing/dag/routing.dag"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">cyber_modules</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="s">"Prediction"</span>
+<span class="w">  </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">dag_files</span><span class="o">:</span><span class="w"> </span><span class="s">"/apollo/modules/prediction/dag/prediction.dag"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">cyber_modules</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="s">"Planning"</span>
+<span class="w">  </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">dag_files</span><span class="o">:</span><span class="w"> </span><span class="s">"/apollo/modules/planning/dag/planning.dag"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">cyber_modules</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="s">"Control"</span>
+<span class="w">  </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">dag_files</span><span class="o">:</span><span class="w"> </span><span class="s">"/apollo/modules/control/dag/control.dag"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">cyber_modules</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="s">"Storytelling"</span>
+<span class="w">  </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">dag_files</span><span class="o">:</span><span class="w"> </span><span class="s">"/apollo/modules/storytelling/dag/storytelling.dag"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ol>
+<li>
+<p><strong>预置 <code>Carla Town01</code> 一键路由终点（避免人工选点误触路肩）</strong>：
+   新建 <code>&lt;WORKDIR&gt;/apollo/modules/map/data/carla_town01/default_end_way_point.txt</code>（以下 3 个主车道地标均已通过 Dreamview <code>CheckRoutingPoint</code> 合法性校验）：
+   </p><div class="highlight"><pre><span></span><code><span class="n">landmark</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">"Town01 North Road"</span>
+<span class="w">  </span><span class="n">waypoint</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pose</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">x</span><span class="o">:</span><span class="w"> </span><span class="mf">245.630</span>
+<span class="w">      </span><span class="n">y</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1.965</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">landmark</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">"Town01 East Straight"</span>
+<span class="w">  </span><span class="n">waypoint</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pose</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">x</span><span class="o">:</span><span class="w"> </span><span class="mf">396.303</span>
+<span class="w">      </span><span class="n">y</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">158.540</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">landmark</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">"Town01 South Road"</span>
+<span class="w">  </span><span class="n">waypoint</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pose</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">x</span><span class="o">:</span><span class="w"> </span><span class="mf">221.620</span>
+<span class="w">      </span><span class="n">y</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">330.603</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>（可选）降低相机渲染负载</strong>：
+   若仅做规控联调且希望进一步降低 GPU 负载，可修改 <code>&lt;WORKDIR&gt;/apollo/modules/carla_bridge/config/objects.json</code> 中 <code>front_6mm</code> 与 <code>front_12mm</code> 两个相机的分辨率与帧率（其余雷达、GNSS、IMU 与真值传感器保持不变）：
+   </p><div class="highlight"><pre><span></span><code><span class="nt">"image_size_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">640</span><span class="p">,</span>
+<span class="nt">"image_size_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">480</span><span class="p">,</span>
+<span class="nt">"sensor_tick"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span>
+</code></pre></div>
+</li>
+</ol>
+<hr/>
+<h2 id="5-部署与启动-carla-0914两种方式">5. 部署与启动 CARLA 0.9.14（两种方式）</h2>
+<h3 id="方式-a宿主机原生运行-carla-0914推荐免去镜像拉取限速与容器显卡映射问题">方式 A：宿主机原生运行 CARLA 0.9.14（推荐，免去镜像拉取限速与容器显卡映射问题）</h3>
+<ol>
+<li>下载并解压官方 <a href="https://carla-releases.s3.us-east-2.amazonaws.com/Linux/CARLA_0.9.14.tar.gz">CARLA_0.9.14.tar.gz</a> 到 <code>&lt;WORKDIR&gt;/CARLA_0.9.14</code>：
+   <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14
+tar<span class="w"> </span>-xzf<span class="w"> </span>CARLA_0.9.14.tar.gz<span class="w"> </span>-C<span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14
 </code></pre></div></li>
-<li>
-<p>Install carla_bridge</p>
-<p>Enter the Apollo container and run:
-</p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/apollo/modules/carla_bridge
-chmod<span class="w"> </span>+x<span class="w"> </span>install.sh
-./install.sh
-<span class="nb">source</span><span class="w"> </span>~/.bashrc
-</code></pre></div>
-</li>
-<li>
-<p>Start the bridge</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>main.py
-</code></pre></div>
-</li>
+<li><strong>补齐缺失的 <code>libomp.so.5</code>（支持无 <code>sudo</code> 环境）</strong>：
+   Ubuntu 22.04 默认未安装 <code>libomp5</code>，直接运行会报 <code>libomp.so.5: cannot open shared object file</code>：
+   <div class="highlight"><pre><span></span><code><span class="c1"># 有 sudo 时：</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>libomp5
+
+<span class="c1"># 若无 sudo 权限，可局部解包注入 LD_LIBRARY_PATH：</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14/extra_libs<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14/extra_libs
+apt-get<span class="w"> </span>download<span class="w"> </span>libomp5-14
+dpkg-deb<span class="w"> </span>-x<span class="w"> </span>libomp5-14_*.deb<span class="w"> </span>.<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>libomp5-14_*.deb
+</code></pre></div></li>
+<li><strong>启动 CARLA 0.9.14</strong>：</li>
+<li><strong>常规 NVIDIA 独显设备</strong>（Xorg 桌面或独立独显）：
+     <div class="highlight"><pre><span></span><code><span class="nv">LIBOMP_DIR</span><span class="o">=</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>find<span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14/extra_libs<span class="w"> </span>-name<span class="w"> </span><span class="s1">'libomp.so.5'</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span><span class="s2">"</span><span class="k">)</span>
+<span class="nb">cd</span><span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14
+<span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">LIBOMP_DIR</span><span class="p">:+</span><span class="nv">$LIBOMP_DIR</span><span class="p">:</span><span class="si">}${</span><span class="nv">LD_LIBRARY_PATH</span><span class="k">:-</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">DISPLAY</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">DISPLAY</span><span class="k">:-</span><span class="p">:</span><span class="nv">0</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">VK_ICD_FILENAMES</span><span class="o">=</span>/usr/share/vulkan/icd.d/nvidia_icd.json<span class="w"> </span><span class="se">\</span>
+<span class="nv">__NV_PRIME_RENDER_OFFLOAD</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">__GLX_VENDOR_LIBRARY_NAME</span><span class="o">=</span>nvidia<span class="w"> </span><span class="se">\</span>
+./CarlaUE4.sh<span class="w"> </span>-prefernvidia<span class="w"> </span>-nosound<span class="w"> </span>-windowed<span class="w"> </span>-ResX<span class="o">=</span><span class="m">800</span><span class="w"> </span>-ResY<span class="o">=</span><span class="m">600</span><span class="w"> </span>-quality-level<span class="o">=</span>Low<span class="w"> </span>-carla-rpc-port<span class="o">=</span><span class="m">2000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>&lt;WORKDIR&gt;/carla_0.9.14.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+</code></pre></div></li>
+<li><strong>AMD+NVIDIA 双显卡笔记本 + Wayland 环境避坑提示</strong>：
+     若在 NVIDIA <code>595.xx</code> 等新版驱动下，跑车约 30 秒触发内核 <code>NVRM: Xid 31 ... FAULT_PDE</code> 及 <code>VK_ERROR_DEVICE_LOST</code> 闪退，请去掉 <code>__NV_PRIME_RENDER_OFFLOAD</code> 与 <code>-prefernvidia</code>，改用 <strong>AMD 核显 RADV Vulkan</strong> 启动（经 62 秒高速压测零故障且保留 3D 窗口）：
+     <div class="highlight"><pre><span></span><code><span class="nv">LIBOMP_DIR</span><span class="o">=</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>find<span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14/extra_libs<span class="w"> </span>-name<span class="w"> </span><span class="s1">'libomp.so.5'</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span><span class="s2">"</span><span class="k">)</span>
+<span class="nb">cd</span><span class="w"> </span>&lt;WORKDIR&gt;/CARLA_0.9.14
+<span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">LIBOMP_DIR</span><span class="p">:+</span><span class="nv">$LIBOMP_DIR</span><span class="p">:</span><span class="si">}${</span><span class="nv">LD_LIBRARY_PATH</span><span class="k">:-</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">DISPLAY</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">DISPLAY</span><span class="k">:-</span><span class="p">:</span><span class="nv">0</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">VK_ICD_FILENAMES</span><span class="o">=</span>/usr/share/vulkan/icd.d/radeon_icd.x86_64.json<span class="w"> </span><span class="se">\</span>
+./CarlaUE4.sh<span class="w"> </span>-nosound<span class="w"> </span>-windowed<span class="w"> </span>-ResX<span class="o">=</span><span class="m">800</span><span class="w"> </span>-ResY<span class="o">=</span><span class="m">600</span><span class="w"> </span>-quality-level<span class="o">=</span>Low<span class="w"> </span>-carla-rpc-port<span class="o">=</span><span class="m">2000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>&lt;WORKDIR&gt;/carla_0.9.14.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+</code></pre></div></li>
+<li>如不需要 3D 桌面窗口（纯服务器/无头模式），可改为添加 <code>-RenderOffScreen</code>。</li>
 </ol>
-<h3 id="result">Result</h3>
-<p>If everything above goes well, you should see this in Apollo client: </p>
-<p><img alt="image" src="../images/Apollo.png"/></p>
-<p>and this in Carla:</p>
-<p><img alt="image" src="../images/CarlaUE4.png"/></p>
-<h2 id="example-start-a-co-simulation">Example: start a co-simulation</h2>
+<h3 id="方式-b使用-docker-运行-carla-0914">方式 B：使用 Docker 运行 CARLA 0.9.14</h3>
+<p>本仓库的 CARLA Compose 文件位于 <code>carla_scripts/</code> 目录下：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>&lt;WORKDIR&gt;/apollo_bridge/carla_scripts
+<span class="c1"># Docker Compose v2：</span>
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>carla-compose.yml<span class="w"> </span>-p<span class="w"> </span>carla<span class="w"> </span>up<span class="w"> </span>-d
+<span class="c1"># （若系统安装的是独立 docker-compose v1，可执行 ./docker_run_carla.sh）</span>
+</code></pre></div>
+<hr/>
+<h2 id="6-联合仿真标准启动与交互操作手册sop">6. 联合仿真标准启动与交互操作手册（SOP）</h2>
+<h3 id="61-四步启动完整环境">6.1 四步启动完整环境</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 第 1 步：启动容器、Monitor 与 Dreamview（http://localhost:8888/）</span>
+<span class="c1"># 注意：必须在 source /apollo/scripts/apollo_base.sh 后将 libtorch_cpu 前置到 LD_LIBRARY_PATH，</span>
+<span class="c1"># 并直接调用 start monitor &amp;&amp; start dreamview（不要运行 ./scripts/dreamview.sh，</span>
+<span class="c1"># 否则子脚本会重新 source apollo.bashrc，在含 NVIDIA GPU 的机器上重新前置 libtorch_gpu，导致网页开关模块失效）</span>
+docker<span class="w"> </span>start<span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  cd /apollo</span>
+<span class="s1">  ./scripts/bootstrap.sh stop &gt;/dev/null 2&gt;&amp;1 || true</span>
+<span class="s1">  source /apollo/scripts/apollo_base.sh</span>
+<span class="s1">  export LD_LIBRARY_PATH="/usr/local/libtorch_cpu/lib:${LD_LIBRARY_PATH}"</span>
+<span class="s1">  start monitor</span>
+<span class="s1">  start dreamview</span>
+<span class="s1">'</span>
+
+<span class="c1"># 第 2 步：按第 5 节启动 CARLA 0.9.14，等待 TCP 2000 端口监听就绪（约 5~10 秒）</span>
+
+<span class="c1"># 第 3 步：启动 carla_bridge（必须指定 -u "$USER" 并注入 libtorch_cpu 与 PYTHONPATH）</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-d<span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  cd /apollo/modules/carla_bridge</span>
+<span class="s1">  source /apollo/cyber/setup.bash</span>
+<span class="s1">  export LD_LIBRARY_PATH="/usr/local/libtorch_cpu/lib:${LD_LIBRARY_PATH}"</span>
+<span class="s1">  export PYTHONPATH="/apollo/cyber:/apollo/cyber/python:/apollo:/apollo/modules:/apollo/modules/carla_bridge/carla_api/carla-0.9.14-py3.7-linux-x86_64.egg:/apollo/bazel-bin:/apollo/bazel-bin/cyber/python/internal"</span>
+<span class="s1">  mkdir -p /apollo/data/log</span>
+<span class="s1">  exec python3 main.py &gt; /apollo/data/log/carla_bridge.log 2&gt;&amp;1</span>
+<span class="s1">'</span>
+<span class="c1"># 等待约 7~12 秒，确认日志出现 "All objects spawned."</span>
+</code></pre></div>
+<blockquote>
+<p><strong>重启约束</strong>：若 <code>carla_bridge</code> 已处于运行状态，不要强杀后直接向同一 CARLA 世界重连 <code>load_world('Town01')</code>（CARLA 0.9.14 在同步模式与传感器尚未释放时重连易 <code>Signal 11</code>）；停桥应发 <code>SIGINT</code> 优雅退出或连同 CARLA 一并重启。</p>
+</blockquote>
+<h3 id="62-dreamview-网页交互步骤">6.2 Dreamview 网页交互步骤</h3>
+<p>在浏览器打开 <strong><code>http://localhost:8888/</code></strong>：</p>
 <ol>
-<li>Open apollo client: http://localhost:8888</li>
-<li>If dreamview doesn't display the map, switch to carla_town04 and then switch back. </li>
-<li>(Optional) Select "Task" in the sidebar and turn on "Camera Sensor" in "Others".</li>
-<li>(Optional) Select "Layer Menu" in the sidebar and turn on "Point Cloud" in "Perception".</li>
-<li>Select "Module Controller" in the sidebar and turn on "Routing", "Localization", "Planning", "Control", "Predict" module.</li>
-<li>Select "Route Editing" in the sidebar.</li>
-<li>Click "Add Point of Interest" and left click at any point on the road to set the destination.</li>
-<li>Click "Send Routing Request".</li>
-</ol></div>
+<li><strong>先确认顶部模式、车型与地图（之后不要再切换）</strong>：</li>
+<li>模式选 <strong><code>Carla Bridge</code></strong></li>
+<li>车型选 <strong><code>Mkz Example</code></strong>（<strong>切勿选 <code>Lincoln2017MKZ LGSVL</code></strong>，该车型自带未调优的 <code>control_conf.pb.txt</code>，会覆盖本地防蠕动和控制参数）</li>
+<li>地图选 <strong><code>Carla Town01</code></strong></li>
+<li>
+<p><strong>注意</strong>：切换顶部下拉框（模式/车型/地图）时，后端会自动触发 <code>ResetMode()</code> 停掉全部模块。如果操作途中切换过，回到上述三项后重新执行第 2 步即可。</p>
+</li>
+<li>
+<p><strong>在左侧 <code>Module Controller</code> 开启核心模块</strong>：</p>
+</li>
+<li>打开以下 <strong>5 个开关</strong>：<code>Routing</code>、<code>Prediction</code>、<code>Planning</code>、<code>Control</code>、<code>Storytelling</code>。</li>
+<li><strong>切勿开启</strong> <code>Localization</code>、<code>Perception</code>、<code>Canbus</code>、<code>Camera</code>、<code>Velodyne</code> 等模块。</li>
+<li>
+<p>正常状态下不应出现 <code>Storytelling triggers safe mode:</code> 红框；未下发路线前，自车位置会出现白色 <code>STOP</code> 墙 + 橙色沙漏与右侧 <code>Brake 50% | 0 km/h</code>，这是等待路线的正常静止待命画面。</p>
+</li>
+<li>
+<p><strong>下发导航路线让车辆自动行驶（两种方式）</strong>：</p>
+</li>
+<li><strong>方式一（推荐，一键预设地标）</strong>：
+     点击左侧 <strong><code>Tasks</code></strong> → 在下方 <strong>Default Routings</strong>（或 <strong>Default Routing</strong>）中选择 <strong><code>Town01 East Straight</code></strong>、<strong><code>Town01 North Road</code></strong> 或 <strong><code>Town01 South Road</code></strong>。</li>
+<li>
+<p><strong>方式二（手动地图选点 <code>Route Editing</code>）</strong>：</p>
+<ul>
+<li>点击左侧 <strong><code>Route Editing</code></strong>；</li>
+<li><strong>不要点击 <code>Set Start Point</code></strong>（系统自动读取自车当前定位与车头朝向）；</li>
+<li>只点击 <strong><code>Add Point of Interest</code></strong>，放大地图并在自车前方<strong>右侧正常行车道（绿色车道中心线内）</strong>左键单击设置终点（注意不要点到边缘白色路肩 <code>SHOULDER</code> 或对向车道）；</li>
+<li>点击 <strong><code>Send Routing Request</code></strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>效果确认与可选可视化</strong>：</p>
+</li>
+<li>下发路线后，沙漏停止墙会立即消失并出现红色全局路由与蓝绿色规划轨迹，刹车归零、油门抬起，车辆在 CARLA 3D 窗口中沿道路自动行驶。</li>
+<li>如需查看传感器画面：可在左侧 <strong>Tasks → Others</strong> 打开 <strong>Camera Sensor</strong>；或在 <strong>Layer Menu → Perception</strong> 打开 <strong>Point Cloud</strong>。</li>
+</ol>
+<p>Apollo Dreamview 与 CARLA 联合仿真效果示意：</p>
+<p><img alt="image" src="../images/Apollo.png"/></p>
+<p><img alt="image" src="../images/CarlaUE4.png"/></p>
+<hr/>
+<h2 id="7-状态巡检与安全停机">7. 状态巡检与安全停机</h2>
+<h3 id="71-在线状态检查命令">7.1 在线状态检查命令</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 检查 Dreamview HTTP 服务</span>
+curl<span class="w"> </span>-sS<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">"Dreamview HTTP=%{http_code}\n"</span><span class="w"> </span>http://127.0.0.1:8888/
+
+<span class="c1"># 2. 列出活跃 Cyber 节点与频道</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  source /apollo/cyber/setup.bash</span>
+<span class="s1">  timeout 5 /apollo/bazel-bin/cyber/tools/cyber_node/cyber_node list</span>
+<span class="s1">  timeout 5 /apollo/bazel-bin/cyber/tools/cyber_channel/cyber_channel list</span>
+<span class="s1">'</span>
+</code></pre></div>
+<h3 id="72-实测闭环性能基准">7.2 实测闭环性能基准</h3>
+<p>在 <code>Carla Bridge | Mkz Example | Carla Town01</code> 下完成的端到端实测参考指标：</p>
+<ul>
+<li><strong>待命零漂移保持（3.5 秒未下发路线）</strong>：自车位移 <code>0.0000 m</code>，车速 <code>0.0000 m/s</code>，<code>Control</code> 稳定输出 <code>throttle = 0.00</code>、<code>brake = 50.00</code>，<code>SystemStatus.require_emergency_stop = False</code>。</li>
+<li><strong>Dreamview WebSocket 13 秒短途闭环</strong>：从 <code>(131.419, -133.428)</code> 行驶至 <code>(162.569, -133.519)</code>（目标 <code>(166.419, -133.444)</code>），刹车由 <code>50.0</code> 平滑释放至 <code>0.00</code>，最高油门 <code>58.61</code>，到达终点附近自动施以 <code>14.5</code> 制动停稳，最高车速 <code>3.01 m/s</code>，累计位移 <code>31.15 m</code>。</li>
+<li><strong>AMD RADV Vulkan 62 秒长途压测</strong>：62.1 秒连续行驶路径 <code>200.53 m</code>（净位移 <code>170.64 m</code>，最高车速 <code>19.61 m/s</code>），<code>/apollo/localization/pose</code> 稳定 <code>10.30 Hz</code>，<code>/clock</code> 稳定 <code>10.31 Hz</code>，全程零 GPU 报错与急停告警。</li>
+</ul>
+<h3 id="73-安全停止全部进程注意---pidhost-保护">7.3 安全停止全部进程（注意 <code>--pid=host</code> 保护）</h3>
+<blockquote>
+<p>由于容器使用 <code>--pid=host</code> 共享宿主机进程空间，<strong>切勿</strong>在容器内执行 <code>pkill -f "python3 main.py"</code> 等模糊查杀命令；停桥时请先发送 <code>SIGINT</code> 让其退出同步模式并销毁传感器。</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 容器内精确停桥、停规控模块并关闭 Dreamview / Monitor</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">HOME</span><span class="o">=</span><span class="s2">"/home/</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span><span class="w"> </span><span class="s2">"apollo_dev_</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">  bridge_pids=$(ps -eo pid,args | grep "python3 main.py" | grep -v grep | awk "{print \$1}")</span>
+<span class="s1">  if [ -n "$bridge_pids" ]; then kill -INT $bridge_pids 2&gt;/dev/null || true; sleep 2; fi</span>
+<span class="s1">  for pat in "routing.dag" "prediction.dag" "planning.dag" "control.dag" "storytelling.dag"; do</span>
+<span class="s1">    pids=$(ps -eo pid,args | grep "$pat" | grep -v grep | awk "{print \$1}")</span>
+<span class="s1">    if [ -n "$pids" ]; then kill $pids 2&gt;/dev/null || true; fi</span>
+<span class="s1">  done</span>
+<span class="s1">  cd /apollo &amp;&amp; source /apollo/cyber/setup.bash &amp;&amp; ./scripts/bootstrap.sh stop</span>
+<span class="s1">'</span>
+
+<span class="c1"># 2. 宿主机停止原生 CARLA（或使用 carla_scripts/stop_carla.sh 停止 Docker 版）</span>
+<span class="nv">pids</span><span class="o">=</span><span class="k">$(</span>ps<span class="w"> </span>-eo<span class="w"> </span>pid,args<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"CarlaUE4-Linux-Shipping"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>grep<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'{print $1}'</span><span class="k">)</span>
+<span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$pids</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">kill</span><span class="w"> </span><span class="nv">$pids</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+</code></pre></div></div>
 </div>
 </div><footer>
-<hr/>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href=".." title="主页"><span class="icon icon-circle-arrow-left"></span> 前一页</a>
+<a class="btn btn-neutral float-right" href="../Troubleshooting/" title="常见问题排查">后一页 <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr>
 <div role="contentinfo">
 <!-- Copyright etc -->
 <p>OpenHUTB 版权所有 © 2026</p>
 </div>
-</footer>
+</hr></footer>
 </div>
 </div>
 </section>
@@ -234,6 +766,8 @@ chmod<span class="w"> </span>+x<span class="w"> </span>install.sh
 <span>
 <a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
 </span>
+<span><a href=".." style="color: #fcfcfc">« 前一页</a></span>
+<span><a href="../Troubleshooting/" style="color: #fcfcfc">后一页 »</a></span>
 </span>
 </div>
 <script src="../js/jquery-3.6.0.min.js"></script>
@@ -253,5 +787,5 @@ chmod<span class="w"> </span>+x<span class="w"> </span>install.sh
             SphinxRtdTheme.Navigation.enable(true);
         });
     </script>
-</body>
+<script>mermaid.initialize({});</script></body>
 </html>

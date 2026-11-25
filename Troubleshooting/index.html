@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>常见问题排查 - 仿真桥</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u5e38\u89c1\u95ee\u9898\u6392\u67e5";
+        var mkdocs_page_input_path = "Troubleshooting.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> 仿真桥
+        </a><div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="搜索文档" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">主页</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted/">入门与完整部署</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">常见问题排查</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#一网络镜像与环境部署类">一、网络、镜像与环境部署类</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#1-git-clone-报-gnutls_handshake-failed-或拉取镜像报-eof">1. git clone 报 gnutls_handshake() failed 或拉取镜像报 EOF</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-官方-dev_startsh--f--y-在地图模型数据卷处失败或占满磁盘">2. 官方 dev_start.sh -f -y 在地图/模型数据卷处失败或占满磁盘</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-全量编译--gpu-编译报错oom-或磁盘爆满">3. 全量编译 / GPU 编译报错、OOM 或磁盘爆满</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-启动原生-carla-0914-报-libompso5-cannot-open-shared-object-file">4. 启动原生 CARLA 0.9.14 报 libomp.so.5: cannot open shared object file</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5-运行-python3-mainpy-报-no-module-named-transforms3d-或-carla">5. 运行 python3 main.py 报 No module named 'transforms3d' 或 'carla'</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#二控制器编译与运动行为类">二、控制器编译与运动行为类</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#6-编译合入后的-refined_controller-报-vehicle_configpbh-no-such-file-or-directory">6. 编译合入后的 refined_controller 报 vehicle_config.pb.h: No such file or directory</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#7-下发路由后-control-一直锁死在-throttle0-brake50车完全不动">7. 下发路由后 Control 一直锁死在 throttle=0, brake=50，车完全不动</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#8-待命态未下发路线或到站停车后车辆以-throttle1570-缓慢向前蠕行">8. 待命态（未下发路线）或到站停车后，车辆以 throttle=15.70% 缓慢向前蠕行</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#三dreamview模块启停与选点下发类">三、Dreamview、模块启停与选点下发类</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#9-网页端-module-controller-点开关拉不起模块或启动报-libc10so-not-found">9. 网页端 Module Controller 点开关拉不起模块，或启动报 libc10.so not found</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#10-切换顶部地图车型后车辆不走或提示-you-havent-selected-a-vehicle-yet">10. 切换顶部地图/车型后车辆不走，或提示 You haven't selected a vehicle yet!</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#11-dreamview-弹出红框-storytelling-triggers-safe-mode-及-system-fault-auto-disengage">11. Dreamview 弹出红框 Storytelling triggers safe mode: 及 System fault. Auto disengage.</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#12-车辆前方出现白色带-x-的-stop-墙--橙色沙漏仪表盘显示-brake-50">12. 车辆前方出现白色带 X 的 STOP 墙 + 橙色沙漏，仪表盘显示 Brake 50%</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#13-在-route-editing-选终点后点-send-routing-request-车不走">13. 在 Route Editing 选终点后点 Send Routing Request 车不走</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#四carla-仿真稳定与运维安全类">四、CARLA 仿真稳定与运维安全类</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#14-容器内执行-pkill--f-误杀宿主机脚本或终端进程">14. 容器内执行 pkill -f 误杀宿主机脚本或终端进程</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#15-sigterm-强杀仿真桥后再重连或休眠唤醒后-carla-signal-11-崩溃或-get_actors-为空">15. SIGTERM 强杀仿真桥后再重连或休眠唤醒后 CARLA Signal 11 崩溃，或 get_actors() 为空</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#16-行车约-30-秒后-carla-窗口突然闪退报-nvrm-xid-31--vk_error_device_lost">16. 行车约 30 秒后 CARLA 窗口突然闪退，报 NVRM Xid 31 / VK_ERROR_DEVICE_LOST</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">示例视频与控制器</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../deployment_introduction/">网络与部署原理</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">仿真桥</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">常见问题排查</li>
+<li class="wy-breadcrumbs-aside">
+<a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/Troubleshooting.md"> 编辑页面</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<div><h1 id="常见问题与实战排障手册apollo-v800--carla-0914">常见问题与实战排障手册（Apollo v8.0.0 + CARLA 0.9.14）</h1>
+<p>本文档汇总了在 <strong>Ubuntu 22.04（x86_64）</strong> 物理机上部署、编译并长时运行 <strong>Apollo v8.0.0 + CARLA 0.9.14 + <code>apollo_bridge</code></strong> 过程中实测定位的 <strong>16 个典型故障</strong>，按阶段分类列出完整现象、根本原因与可直接执行的解决方法。</p>
+<blockquote>
+<p>完整搭建流程请参阅 <a href="../GettingStarted/">入门与完整部署指南</a>。</p>
+</blockquote>
+<hr/>
+<h2 id="一网络镜像与环境部署类">一、网络、镜像与环境部署类</h2>
+<h3 id="1-git-clone-报-gnutls_handshake-failed-或拉取镜像报-eof">1. <code>git clone</code> 报 <code>gnutls_handshake() failed</code> 或拉取镜像报 <code>EOF</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：终端配置有代理（<code>http_proxy</code> / <code>https_proxy</code>）时，克隆 Apollo/仓库或 <code>docker pull</code> 出现 <code>gnutls_handshake() failed</code>、<code>auth.docker.io ... EOF</code>。</li>
+<li><strong>根本原因</strong>：部分本地代理对 GitHub 或 Docker Registry 的 HTTPS 长连接分片 TLS 握手不稳定；另外 <code>-g cn</code> 对应的国内部分镜像站也可能触发 SSL EOF。</li>
+<li><strong>解决方案</strong>：命令行临时取消代理环境变量改为直连（并且不要在 <code>dev_start.sh</code> 中盲目加 <code>-g cn</code>）：
+  <div class="highlight"><pre><span></span><code>env<span class="w"> </span>-u<span class="w"> </span>http_proxy<span class="w"> </span>-u<span class="w"> </span>https_proxy<span class="w"> </span>-u<span class="w"> </span>HTTP_PROXY<span class="w"> </span>-u<span class="w"> </span>HTTPS_PROXY<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--branch<span class="w"> </span>v8.0.0<span class="w"> </span>https://github.com/ApolloAuto/apollo.git
+</code></pre></div></li>
+</ul>
+<h3 id="2-官方-dev_startsh--f--y-在地图模型数据卷处失败或占满磁盘">2. 官方 <code>dev_start.sh -f -y</code> 在地图/模型数据卷处失败或占满磁盘</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：运行 <code>bash docker/scripts/dev_start.sh -f -y</code> 时在 <code>map_volume-sunnyvale_big_loop-latest</code> 等阶段超时或下载失败。</li>
+<li><strong>根本原因</strong>：<code>dev_start.sh</code> 会强制拉取 2 个 Sunnyvale 地图卷和 8 个感知/音频模型卷；而与 <code>carla_bridge</code> 联合仿真直接使用自带的 <code>carla_town*</code> 地图和仿真真值，完全不需要这 10 个大体积数据卷。</li>
+<li><strong>解决方案</strong>：直接拉取主开发镜像 <code>apolloauto/apollo:dev-x86_64-18.04-20221124_1708</code>，改用 <a href="../GettingStarted/">入门与完整部署指南 §3.2</a> 中的等效 <code>docker run</code> 命令创建容器。</li>
+</ul>
+<h3 id="3-全量编译--gpu-编译报错oom-或磁盘爆满">3. 全量编译 / GPU 编译报错、<code>OOM</code> 或磁盘爆满</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：执行 <code>./apollo.sh build_gpu</code> 时，RTX 40 系列（<code>compute_89</code>）在 Apollo 8.0 默认 CUDA 11.1 下 nvcc 编译失败；或内存 14–16 GiB 机器出现 OOM Killer / <code>--disk_cache</code> 产生双份构建产物撑爆磁盘。</li>
+<li><strong>根本原因</strong>：Apollo <code>v8.0.0</code> 容器内置 CUDA 11.1 不支持 Ada Lovelace 架构（<code>compute_89</code>），且全量目标（含感知模型与单测）体积巨大。</li>
+<li><strong>解决方案</strong>：</li>
+<li>保证物理内存 + Swap 合计 <code>&gt;= 30 GiB</code>；</li>
+<li>使用 <a href="../GettingStarted/">入门与完整部署指南 §3.4</a> 中的 <code>--config=cpu --disk_cache= --jobs=6 --local_ram_resources=8192</code>，按需仅编译联合仿真所需的核心模块。</li>
+</ul>
+<h3 id="4-启动原生-carla-0914-报-libompso5-cannot-open-shared-object-file">4. 启动原生 CARLA 0.9.14 报 <code>libomp.so.5: cannot open shared object file</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：解压官方 <code>CARLA_0.9.14.tar.gz</code> 后运行 <code>./CarlaUE4.sh</code> 立即退出并报缺少 <code>libomp.so.5</code>。</li>
+<li><strong>根本原因</strong>：Ubuntu 22.04 默认未预装 OpenMP 5 运行时库 <code>libomp5</code>。</li>
+<li><strong>解决方案</strong>：有 <code>sudo</code> 权限时安装 <code>sudo apt-get install -y libomp5</code>；无 <code>sudo</code> 权限时通过 <code>apt-get download libomp5-14 &amp;&amp; dpkg-deb -x libomp5-14_*.deb extra_libs</code> 解压后将其目录前置写入 <code>LD_LIBRARY_PATH</code>（详见 <a href="../GettingStarted/">入门与完整部署指南 §5</a>）。</li>
+</ul>
+<h3 id="5-运行-python3-mainpy-报-no-module-named-transforms3d-或-carla">5. 运行 <code>python3 main.py</code> 报 <code>No module named 'transforms3d'</code> 或 <code>'carla'</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：容器内执行 <code>python3 main.py</code> 时报缺少 <code>transforms3d</code>、<code>loguru</code>、<code>networkx</code> 或 <code>carla</code>。</li>
+<li><strong>根本原因</strong>：</li>
+<li><code>install.sh</code> 通过 <code>pip3 install -r requirements.txt</code> 将依赖安装在普通用户 <code>$HOME/.local/lib/python3.6/site-packages</code> 下，如果用默认的 <code>docker exec</code>（<code>root</code> 身份）启动会找不到普通用户包目录；</li>
+<li>非交互式 <code>docker exec ... bash -c</code> 不会自动读取 <code>~/.bashrc</code> 里的 <code>PYTHONPATH</code>。</li>
+<li><strong>解决方案</strong>：启动仿真桥时务必指定 <code>-u "$USER" -e HOME="/home/${USER}"</code>，并在启动命令中显式导出完整 <code>PYTHONPATH</code>（包含 <code>carla-0.9.14-py3.7-linux-x86_64.egg</code> 与 <code>/apollo/bazel-bin/cyber/python/internal</code>）。</li>
+</ul>
+<hr/>
+<h2 id="二控制器编译与运动行为类">二、控制器编译与运动行为类</h2>
+<h3 id="6-编译合入后的-refined_controller-报-vehicle_configpbh-no-such-file-or-directory">6. 编译合入后的 <code>refined_controller</code> 报 <code>vehicle_config.pb.h: No such file or directory</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：替换 <code>refined_controller/</code> 下 3 个文件后编译 <code>//modules/control:libcontrol_component.so</code>，<code>mpc_controller.h</code> 第 29 行编译失败。</li>
+<li><strong>根本原因</strong>：<code>carla_bridge/refined_controller/mpc_controller.h</code> 第 29 行沿用了早期 Apollo 的头文件旧路径 <code>#include "modules/common/configs/proto/vehicle_config.pb.h"</code>，在 Apollo <code>v8.0.0</code> 中已迁移至 <code>modules/common_msgs/config_msgs/</code>。</li>
+<li><strong>解决方案</strong>：将 <code>&lt;WORKDIR&gt;/apollo/modules/control/controller/mpc_controller.h</code> 第 29 行修改为 <code>#include "modules/common_msgs/config_msgs/vehicle_config.pb.h"</code> 后重编控制组件。</li>
+</ul>
+<h3 id="7-下发路由后-control-一直锁死在-throttle0-brake50车完全不动">7. 下发路由后 Control 一直锁死在 <code>throttle=0, brake=50</code>，车完全不动</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：路线已生成、Planning 已发布轨迹，但 <code>/apollo/control</code> 一直输出 <code>throttle = 0</code>、<code>brake = 50</code>，日志提示 <code>estop for empty planning trajectory</code>。</li>
+<li><strong>根本原因</strong>：Apollo <code>control_conf.proto</code> 默认 <code>enable_persistent_estop = true</code>。只要在等待路由的初期出现过空轨迹，<code>ControlComponent</code> 内部 <code>estop_</code> 就会永久锁死为 <code>true</code>，之后即使出现合法轨迹也不会自动解除。</li>
+<li><strong>解决方案</strong>：在 <code>&lt;WORKDIR&gt;/apollo/modules/control/conf/control_conf.pb.txt</code> 中加入 <code>enable_persistent_estop: false</code>（并注意 Dreamview 中不要选择自带旧配置覆盖该文件的 <code>Lincoln2017MKZ LGSVL</code> 车型）。</li>
+</ul>
+<h3 id="8-待命态未下发路线或到站停车后车辆以-throttle1570-缓慢向前蠕行">8. 待命态（未下发路线）或到站停车后，车辆以 <code>throttle=15.70%</code> 缓慢向前蠕行</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：无导航路线（Planning <code>not_ready=True</code>）或已到达终点后，<code>Control</code> 依然输出 <code>throttle=15.70, brake=0.00</code>，导致自车以 <code>0.3~0.8 m/s</code> 缓慢向前滑行甚至撞入路口。</li>
+<li><strong>根本原因</strong>：</li>
+<li><code>refined_controller/control_conf.pb.txt</code> 的 <code>mpc_controller_conf.calibration_table</code> 在 <code>speed: 0.0</code> 处直接从 <code>(acceleration: -0.48, command: -2.82)</code> 跨跳至 <code>(acceleration: 0.09, command: 30.06)</code>。原有的 <code>standstill_acceleration: -0.3</code> 线性插值后落在正区间（<code>+7.56</code>），被 <code>vehicle_param_.throttle_deadzone()</code>（<code>15.7</code>）钳位为 <code>15.7%</code> 正油门（真实车轮死区内不动，CARLA 仿真车会直接起步）；</li>
+<li>Planning 在 <code>not_ready=True</code> 时发布的 30 点静态轨 <code>trajectory_type</code> 为 <code>UNKNOWN (0)</code>，绕过了 <code>mpc_controller.cc</code> 仅针对 <code>NORMAL</code> 轨迹的停驻保护。</li>
+<li><strong>解决方案</strong>（详见 <a href="../GettingStarted/">入门与完整部署指南 §4.1</a>）：</li>
+<li>将 <code>mpc_controller_conf</code> 中的 <code>standstill_acceleration</code> 改为 <code>-1.0</code>；</li>
+<li>在 <code>control_component.cc</code> 中增加 <code>local_view_.trajectory().decision().main_decision().has_not_ready()</code> 制动判断并重编 <code>libcontrol_component.so</code>。</li>
+</ul>
+<hr/>
+<h2 id="三dreamview模块启停与选点下发类">三、Dreamview、模块启停与选点下发类</h2>
+<h3 id="9-网页端-module-controller-点开关拉不起模块或启动报-libc10so-not-found">9. 网页端 <code>Module Controller</code> 点开关拉不起模块，或启动报 <code>libc10.so not found</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：在 Dreamview 左侧点击打开 <code>Planning</code> / <code>Prediction</code> 等开关后立即自动弹回关闭；或命令行 <code>cmd1 &amp; cmd2 &amp;</code> 启动后台模块时 <code>data/log/</code> 报错 <code>libc10.so: cannot open shared object file</code> / <code>CYBER_PATH not set</code>。</li>
+<li><strong>根本原因</strong>：</li>
+<li>Bash 中 <code>source setup.bash &amp;&amp; cmd1 &amp; cmd2 &amp;</code> 的 <code>&amp;</code> 优先级低于 <code>&amp;&amp;</code>，<code>cmd2</code> 及之后进程未继承环境；</li>
+<li><code>./scripts/dreamview.sh</code> 启动时会再次 <code>source apollo.bashrc</code>，在检测到 NVIDIA GPU 的主机上强制把 <code>/usr/local/libtorch_gpu/lib</code> 前置到 <code>LD_LIBRARY_PATH</code>，与 <code>--config=cpu</code> 编译的二进制冲突。</li>
+<li><strong>解决方案</strong>：按 <a href="../GettingStarted/">入门与完整部署指南 §6.1</a> 第 1 步，在 <code>source /apollo/scripts/apollo_base.sh</code> 之后显式执行 <code>export LD_LIBRARY_PATH="/usr/local/libtorch_cpu/lib:${LD_LIBRARY_PATH}"</code>，然后直接调用 shell 函数 <code>start monitor &amp;&amp; start dreamview</code>。</li>
+</ul>
+<h3 id="10-切换顶部地图车型后车辆不走或提示-you-havent-selected-a-vehicle-yet">10. 切换顶部地图/车型后车辆不走，或提示 <code>You haven't selected a vehicle yet!</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：原本模块已开启，在 Dreamview 顶部切换了一次地图（例如刷新地图切到 <code>Carla Town04</code> 再切回 <code>Carla Town01</code>）或切换模式/车型后，点 <code>Send Routing Request</code> 车没反应；或者选中 <code>Lincoln2017MKZ LGSVL</code> 后出现 <code>brake=50</code> 锁死。</li>
+<li><strong>根本原因</strong>：</li>
+<li>Dreamview 后端 <code>HMIWorker::ChangeMap</code> / <code>ChangeVehicle</code> / <code>ChangeMode</code> 在切换时会调用 <code>ResetMode()</code> 自动停掉全部后台模块；</li>
+<li><code>modules/calibration/data/Lincoln2017MKZ_LGSVL/</code> 目录自带有未调优、未关闭 <code>enable_persistent_estop</code> 的 <code>control_conf.pb.txt</code>，选中该车型会覆盖全局控制配置。</li>
+<li><strong>解决方案</strong>：固定使用 <strong><code>Carla Bridge</code> | <code>Mkz Example</code> | <code>Carla Town01</code></strong>；若中途不小心切过顶部下拉框，切回上述三项后，直接在左侧 <strong><code>Module Controller</code></strong> 把 5 个模块开关重新点亮即可。</li>
+</ul>
+<h3 id="11-dreamview-弹出红框-storytelling-triggers-safe-mode-及-system-fault-auto-disengage">11. Dreamview 弹出红框 <code>Storytelling triggers safe mode:</code> 及 <code>System fault. Auto disengage.</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：Dreamview 顶部右侧长期弹出红色告警 <code>Storytelling triggers safe mode:</code>，且 <code>monitor</code> 日志出现 <code>System fault. Auto disengage.</code>。</li>
+<li><strong>根本原因</strong>：<code>carla_bridge</code> 默认向 <code>/apollo/canbus/chassis</code> 上报 <code>COMPLETE_AUTO_DRIVE</code>，触发 <code>FunctionalSafetyMonitor::CheckSafety()</code> 检查当前 HMI 模式下的所有模块；由于 <code>hmi_mode.proto</code> 默认 <code>required_for_safety: true</code>，在 <code>Mkz Standard Debug</code> 模式下任何未启动的实车模块（<code>Storytelling</code>、<code>Camera</code>、<code>Canbus</code>、<code>Velodyne</code>、<code>GPS</code> 等）都会触发安全模式停机。</li>
+<li><strong>解决方案</strong>：按照 <a href="../GettingStarted/">入门与完整部署指南 §4.2</a> 创建精简的 5 模块模式 <code>/apollo/modules/dreamview/conf/hmi_modes/carla_bridge.pb.txt</code>，并在 Dreamview 中切换至 <strong><code>Carla Bridge</code></strong> 模式并打开全部 5 个开关。</li>
+</ul>
+<h3 id="12-车辆前方出现白色带-x-的-stop-墙--橙色沙漏仪表盘显示-brake-50">12. 车辆前方出现白色带 X 的 <code>STOP</code> 墙 + 橙色沙漏，仪表盘显示 <code>Brake 50%</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：仿真正常启动后，Dreamview 中蓝色自车前出现白色 <code>STOP</code> 网格墙与橙色沙漏图标，车速 <code>0 km/h</code>。</li>
+<li><strong>根本原因</strong>：这是 <strong>尚未下发路由时的正常待命画面</strong>。未收到有效路由时 Planning 发布 <code>not_ready</code>（Dreamview <code>UpdateMainStopDecision</code> 据此在自车位置渲染 <code>STOP_REASON_NOT_READY</code> 沙漏墙），同时 <code>Control</code> 依第 8 条补丁输出 <code>brake = 50%</code> 防止漂移。</li>
+<li><strong>解决方案</strong>：无需特殊处理，确认处于 <code>Carla Bridge</code> 模式且 5 个模块开启后，通过 <code>Tasks → Default Routings</code> 或 <code>Route Editing</code> 下发合法终点，沙漏会自动清除并起步。</li>
+</ul>
+<h3 id="13-在-route-editing-选终点后点-send-routing-request-车不走">13. 在 <code>Route Editing</code> 选终点后点 <code>Send Routing Request</code> 车不走</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：点击 <code>Send Routing Request</code> 后无路由线出现，查看 <code>data/log/dreamview.INFO</code> 可见：</li>
+<li><code>Expected lane ... to be CITY_DRIVING, but was SHOULDER</code></li>
+<li><code>Selected point cannot be a routing point.</code></li>
+<li><code>Failed to prepare a routing request with heading: ... cannot locate start point on map.</code></li>
+<li><strong>根本原因</strong>：在地图上点偏到边缘白色路肩（<code>SHOULDER</code>）、对向车道，或者误点 <code>Set Start Point</code> 改变了起点朝向导致与道路航向角偏差过大。</li>
+<li><strong>解决方案</strong>：</li>
+<li>推荐直接使用预置文件 <code>default_end_way_point.txt</code>，在左侧 <strong><code>Tasks → Default Routings</code></strong> 一键下发；</li>
+<li>手动 <code>Route Editing</code> 时<strong>千万不要点 <code>Set Start Point</code></strong>，只点 <strong><code>Add Point of Interest</code></strong>，放大地图并在自车前方<strong>右侧正常行车道（绿色中心线内）</strong>左键单击设置终点后再发送请求。</li>
+</ul>
+<hr/>
+<h2 id="四carla-仿真稳定与运维安全类">四、CARLA 仿真稳定与运维安全类</h2>
+<h3 id="14-容器内执行-pkill--f-误杀宿主机脚本或终端进程">14. 容器内执行 <code>pkill -f</code> 误杀宿主机脚本或终端进程</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：在容器内用 <code>pkill -f "python3 main.py"</code> 等模糊命令清进程时，把宿主机上同关键字的任务/脚本一并杀掉。</li>
+<li><strong>根本原因</strong>：容器以 <code>--pid=host</code> 启动，容器与宿主机共用同一套 PID 命名空间。</li>
+<li><strong>解决方案</strong>：严禁在容器内使用模糊 <code>pkill -f</code>，停进程时先通过 <code>ps -eo pid,args | grep ...</code> 精准查出目标 PID，再执行 <code>kill &lt;PID&gt;</code>。</li>
+</ul>
+<h3 id="15-sigterm-强杀仿真桥后再重连或休眠唤醒后-carla-signal-11-崩溃或-get_actors-为空">15. <code>SIGTERM</code> 强杀仿真桥后再重连或休眠唤醒后 CARLA <code>Signal 11</code> 崩溃，或 <code>get_actors()</code> 为空</h3>
+<ul>
+<li><strong>现象 / 日志</strong>：</li>
+<li>用 <code>SIGTERM</code>/<code>SIGKILL</code> 杀掉运行中的 <code>carla_bridge</code> 后再次启动 <code>main.py</code>，或宿主机休眠唤醒后连接，CARLA 在 <code>load_world('Town01')</code> 瞬间段错误崩溃；</li>
+<li>独立 Python 脚本连上 CARLA 调用 <code>world.get_actors()</code> 返回 <code>[]</code>。</li>
+<li><strong>根本原因</strong>：</li>
+<li><code>SIGTERM</code> 未触发 <code>main.py</code> 的 <code>finally:</code> 清理逻辑，上一轮开启的 <code>synchronous_mode</code> 与 GPU 传感器尚挂在 CARLA 内存中时二次 <code>load_world</code> 易引发 UE4 崩溃；</li>
+<li>新建 <code>carla.Client</code> 尚未等待一帧世界快照同步。</li>
+<li><strong>解决方案</strong>：停止 <code>carla_bridge</code> 先发 <code>kill -INT &lt;PID&gt;</code>（触发清理同步模式与传感器）；若已异常崩溃，连同 CARLA 一起成对重启。外部脚本读取 Actor 前先调用 <code>world.wait_for_tick(5.0)</code>。</li>
+</ul>
+<h3 id="16-行车约-30-秒后-carla-窗口突然闪退报-nvrm-xid-31--vk_error_device_lost">16. 行车约 30 秒后 CARLA 窗口突然闪退，报 <code>NVRM Xid 31</code> / <code>VK_ERROR_DEVICE_LOST</code></h3>
+<ul>
+<li><strong>现象 / 日志</strong>：仿真开始行驶约 31–33 秒后 CARLA 3D 窗口直接闪退，<code>carla_0.9.14.log</code> 报：
+  <code>VulkanRHI::vkDeviceWaitIdle(Device) failed, VkResult=-4 ... VK_ERROR_DEVICE_LOST</code> 与 <code>Signal 11</code>；
+  系统内核日志（<code>journalctl -k</code>）在崩溃前 1 秒出现：
+  <code>NVRM: Xid (PCI:0000:01:00): 31 ... ENGINE GRAPHICS GPC2 GPCCLIENT_PROP_0 faulted @ 0x0_00004000. Fault is of type FAULT_PDE</code>。</li>
+<li><strong>根本原因</strong>：部分新版 NVIDIA 驱动（如 <code>595.xx</code>）在 AMD+NVIDIA 双显卡笔记本的 Ubuntu Wayland / Xwayland PRIME 环境下运行 CARLA 0.9.14（UE4 4.26 Vulkan）时存在显存页面映射缺陷（即使调低相机分辨率与帧率仍会在行车约 30 秒后复现）。</li>
+<li><strong>解决方案</strong>：</li>
+<li><strong>双显卡推荐（保留 3D 窗口）</strong>：去掉 <code>__NV_PRIME_RENDER_OFFLOAD=1</code> 与 <code>-prefernvidia</code>，设置 <code>VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json</code>，改由 AMD Radeon 核显（RADV Vulkan）跑 CARLA 窗口（实测 62 秒连续行驶 200 米零故障、定位稳定 ~10.3 Hz）；</li>
+<li><strong>无头模式备选</strong>：若机器无核显或不需桌面 3D 窗口，可在 CARLA 启动参数中使用 <code>-RenderOffScreen</code>，通过 Dreamview 观察车辆与相机画面。</li>
+</ul></div>
+</div>
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../GettingStarted/" title="入门与完整部署"><span class="icon icon-circle-arrow-left"></span> 前一页</a>
+<a class="btn btn-neutral float-right" href="../RefinedController/" title="示例视频与控制器">后一页 <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>OpenHUTB 版权所有 © 2026</p>
+</div>
+</hr></footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
+</span>
+<span><a href="../GettingStarted/" style="color: #fcfcfc">« 前一页</a></span>
+<span><a href="../RefinedController/" style="color: #fcfcfc">后一页 »</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script>
+<script src="../js/umlconvert.js"></script>
+<script src="../search/main.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>
