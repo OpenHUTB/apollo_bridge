@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>配置与 Apollo 12 适配记录 - 仿真桥</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u914d\u7f6e\u4e0e Apollo 12 \u9002\u914d\u8bb0\u5f55";
+        var mkdocs_page_input_path = "configuration_apollo12.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> 仿真桥
+        </a><div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="搜索文档" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">入门</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted/">快速开始</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">配置与 Apollo 12 适配记录</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#0-结论速览tldr">0. 结论速览（TL;DR）</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#1-背景与任务拆解">1. 背景与任务拆解</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#11-当前进度">1.1 当前进度</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#2-用-aoci-code-理解仓库">2. 用 AOCI-CODE 理解仓库</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#21-安装与索引建立过程">2.1 安装与索引建立过程</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#22-分层架构">2.2 分层架构</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#23-核心数据闭环">2.3 核心数据闭环</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#24-aoci-索引揭示的关键约束容易踩的坑">2.4 AOCI 索引揭示的关键约束（容易踩的坑）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#25-风险清单">2.5 风险清单</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#3-本机环境勘察与实际阻塞">3. 本机环境勘察与实际阻塞</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#4-官方流程复现ubuntu--nvidia-主机">4. 官方流程复现（Ubuntu + NVIDIA 主机）</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#41-前置依赖">4.1 前置依赖</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#42-构建-apollo-v800官方基线">4.2 构建 Apollo v8.0.0（官方基线）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#43-启动-carla-0914宿主机">4.3 启动 CARLA 0.9.14（宿主机）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#44-安装并启动桥在-apollo-容器内">4.4 安装并启动桥（在 Apollo 容器内）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#45-启动顺序">4.5 启动顺序</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#46-联合仿真操作步骤官方-example">4.6 联合仿真操作步骤（官方 Example）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#47-把模拟器换成-openhutbissue-1-的新要求">4.7 把模拟器换成 OpenHUTB（Issue #1 的新要求）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#48-在-wsl2-里跑-apollo--桥绕开-docker-desktop">4.8 在 WSL2 里跑 Apollo + 桥（绕开 Docker Desktop）</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#49-wsl2-的构建上限与原生-ubuntu-方案">4.9 WSL2 的构建上限与原生 Ubuntu 方案</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#5-本机完成的验证真实执行结果">5. 本机完成的验证（真实执行结果）</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#6-apollo-12-适配方案尚未发布">6. Apollo 12 适配方案（尚未发布）</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#61-已核实的事实">6.1 已核实的事实</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#62-好消息桥主体的跨版本风险低">6.2 好消息：桥主体的跨版本风险低</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#63-真正的断点控制模块在-v9-起插件化">6.3 真正的断点：控制模块在 v9 起插件化</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#64-适配决策流程">6.4 适配决策流程</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#65-逐文件移植清单">6.5 逐文件移植清单</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#66-apollo-12-到达后的第一步环境探测">6.6 Apollo 12 到达后的第一步：环境探测</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#67-风险与回退">6.7 风险与回退</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#68-文档发布对应-issue-1-第-1-条">6.8 文档发布（对应 Issue #1 第 1 条）</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#7-交付物清单">7. 交付物清单</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#附录-a常用命令速查">附录 A：常用命令速查</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#附录-b故障排查">附录 B：故障排查</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#附录-c解除本机-docker-阻塞需要你确认一次">附录 C：解除本机 Docker 阻塞（需要你确认一次）</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="" href="../PR">None</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../deployment_introduction/">部署介绍</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">精调控制器与示例视频</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">仿真桥</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">配置与 Apollo 12 适配记录</li>
+<li class="wy-breadcrumbs-aside">
+<a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/configuration_apollo12.md"> 编辑页面</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<div><h1 id="openhutbapollo-仿真桥配置与-apollo-12-适配记录">OpenHUTB–Apollo 仿真桥配置与 Apollo 12 适配记录</h1>
+<blockquote>
+<p>记录日期：2026-11-21（2026-11-20 初稿）<br/>
+工作目录：<code>D:/qing_zhuomian/仿真彭晗老师</code><br/>
+上游仓库：<code>guardstrikelab/carla_apollo_bridge</code>，commit <code>b0c2e088</code>（2024-09-09）<br/>
+文档发布仓库：<code>OpenHUTB/apollo_bridge</code>（mkdocs）<br/>
+对应 Issue：<a href="https://github.com/OpenHUTB/apollo_bridge/issues/1">OpenHUTB/apollo_bridge#1</a><br/>
+工具：AOCI-CODE v0.1.1（agent-native 认知索引）</p>
+</blockquote>
+<hr/>
+<h2 id="0-结论速览tldr">0. 结论速览（TL;DR）</h2>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>任务是什么</td>
+<td>维护 Apollo 与模拟器之间的仿真桥；先按文档跑通，再把同一座桥跑到 <strong>Apollo 12 + OpenHUTB 最新版（兼容 CARLA 接口）</strong> 上，并用中文文档发布</td>
+</tr>
+<tr>
+<td>官方支持版本</td>
+<td>上游 README 写明 CARLA 0.9.14 + Apollo v8.0.0；Issue #1 要求改成 OpenHUTB 最新版 + Apollo 12</td>
+</tr>
+<tr>
+<td>本机硬件</td>
+<td><strong>RTX 4050 Laptop GPU，6141 MiB，驱动 592.00 / CUDA 13.1</strong>；<code>nvidia-smi</code> 正常，WSL2 内也能直通</td>
+</tr>
+<tr>
+<td>本机 Linux 环境</td>
+<td>WSL2 Ubuntu 22.04 曾跑通（Docker 29.1.3、GPU 直通），但 Bazel 编译会让 WSL 整机重启；为腾出 37 GB 解压 OpenHUTB，已 <code>wsl --unregister</code> 删除该发行版，Apollo 环境需在原生 Ubuntu 重建</td>
+</tr>
+<tr>
+<td>为什么不用 Docker Desktop</td>
+<td>Docker Desktop 在 Windows Home 上反复因 <code>sailor-ingest.sock</code> 句柄 <code>Access is denied</code> 起不来；已改用 WSL2 内的原生 Docker Engine；该方案验证可行</td>
+</tr>
+<tr>
+<td>已经做到什么</td>
+<td>AOCI-CODE 58 条认知条目；7 项离线冒烟验证；中文文档 + mkdocs 6 页；<strong>OpenHUTB 2.10.1 已在本机 Windows 原生跑起来（Town10HD，RPC 2000，24 个 actor）</strong></td>
+</tr>
+<tr>
+<td>还差什么</td>
+<td>Apollo 8 镜像/容器/桥曾就位，但编译会让 WSL2 整机重启（2–4 分钟必现）→ <strong>需要原生 Ubuntu 主机</strong>；Apollo 12 需要老师提供内部源码或镜像</td>
+</tr>
+<tr>
+<td>文档发布</td>
+<td>已合入 <code>OpenHUTB/apollo_bridge</code> 本地分支，<code>mkdocs build</code> 通过（6 页）；按协作规则<strong>尚未 push</strong>，等你授权</td>
+</tr>
+<tr>
+<td>Apollo 12 现状</td>
+<td>截至 2026-11-21，Apollo 公开 tag 最高为 <code>v11.0.0</code>，<strong>没有公开的 v12 源码或 tag</strong>；v12 方案基于 v9–v11 架构演进推导，需拿到内部预览版后用 <code>tools/probe_apollo12.sh</code> 复核</td>
+</tr>
+<tr>
+<td>适配难点</td>
+<td>① 桥主体依赖的 18 个 proto 在 v8/v11 都存在，<code>ControlCommand</code> 字段稳定 → 风险低；② 控制架构从 v9 起插件化（pipeline + plugins.xml），原 3 文件替换法失效 → 风险高</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="1-背景与任务拆解">1. 背景与任务拆解</h2>
+<p>百度阿波罗团队需要维护一座连接 Apollo 与模拟器两个生态的仿真桥。Issue #1 的原始要求是：</p>
+<ol>
+<li>按照本仓库的文档把仿真桥跑起来，用中文整理好文档并发布；</li>
+<li>在 <strong>Apollo 12</strong>（还在百度内部开发）和 <strong>OpenHUTB 最新版</strong>（兼容 CARLA 接口，<a href="https://github.com/OpenHUTB/hutb">https://github.com/OpenHUTB/hutb</a>）上跑起来。</li>
+</ol>
+<p>相比最初的表述，这里有两个关键变化，后续工作全部以此为准：</p>
+<ul>
+<li>模拟器侧从 <strong>CARLA 0.9.14</strong> 换成 <strong>OpenHUTB 最新版</strong>（CARLA 接口兼容）；</li>
+<li>交付物除了代码，还包括<strong>在 <code>OpenHUTB/apollo_bridge</code> 里发布的中文文档站</strong>（mkdocs）。</li>
+</ul>
+<p>方法上，先用 <strong>AOCI-CODE</strong> 把上游仓库"读厚再读薄"，形成可版本化的认知索引，再据此判断改造面。</p>
+<h3 id="11-当前进度">1.1 当前进度</h3>
+<table>
+<thead>
+<tr>
+<th>工作项</th>
+<th>状态</th>
+<th>证据/位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AOCI 认知索引</td>
+<td>✅ 完成</td>
+<td><code>carla_apollo_bridge/aoci.code.txt</code>，58 条，<code>verify</code>/<code>check</code> 全绿</td>
+</tr>
+<tr>
+<td>中文配置文档</td>
+<td>✅ 完成初稿</td>
+<td><code>docs/仿真桥配置与Apollo12适配记录.md</code></td>
+</tr>
+<tr>
+<td>mkdocs 文档站</td>
+<td>✅ 本地构建通过</td>
+<td><code>apollo_bridge_openhutb/site/</code>，6 个页面</td>
+</tr>
+<tr>
+<td>WSL2 Ubuntu 22.04</td>
+<td>⚠️ 已删除</td>
+<td>曾跑通 Docker/GPU；为腾 37 GB 解压 OpenHUTB 已 unregister，需重建</td>
+</tr>
+<tr>
+<td>WSL2 Docker Engine</td>
+<td>✅ 验证过</td>
+<td>Docker 29.1.3，<code>hello-world</code> 成功；方案可行，但宿主机编译会崩</td>
+</tr>
+<tr>
+<td>OpenHUTB 模拟器</td>
+<td>✅ 跑通</td>
+<td>2.10.1，Town10HD，RPC 2000，24 个 actor；截图见 <code>docs/images/openhutb_town10hd.png</code></td>
+</tr>
+<tr>
+<td>Apollo 8 开发镜像</td>
+<td>✅ 曾拉取</td>
+<td><code>apolloauto/apollo:dev-x86_64-18.04-20221124_1708</code>，23.2 GB（随 WSL 删除）</td>
+</tr>
+<tr>
+<td>Apollo 8 基线编译</td>
+<td>❌ 本机不可行</td>
+<td>Bazel 持续编译会让 WSL2 整机重启；改用 <code>tools/bootstrap_apollo_bridge_ubuntu.sh</code> 在原生 Ubuntu 上跑</td>
+</tr>
+<tr>
+<td>Apollo 12 联调</td>
+<td>⏳ 等内部预览版</td>
+<td>探测脚本 <code>tools/probe_apollo12.sh</code> 已就绪</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2-用-aoci-code-理解仓库">2. 用 AOCI-CODE 理解仓库</h2>
+<h3 id="21-安装与索引建立过程">2.1 安装与索引建立过程</h3>
+<p>AOCI-CODE 是 Go 写的 CLI/MCP Server，把源码蒸馏成纯文本认知索引（<code>aoci.txt</code> / <code>aoci.meta.txt</code> / <code>aoci.code.txt</code>）。本机无 Go，直接下载官方 Windows 二进制并校验 SHA256：</p>
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>release<span class="w"> </span>download<span class="w"> </span>v0.1.1<span class="w"> </span>-R<span class="w"> </span>aoci-spec/aoci-code<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-p<span class="w"> </span><span class="s2">"aoci_0.1.1_windows_amd64.zip"</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">"SHA256SUMS"</span>
+sha256sum<span class="w"> </span>-c<span class="w"> </span>&lt;<span class="o">(</span>grep<span class="w"> </span><span class="s2">"aoci_0.1.1_windows_amd64.zip</span>$<span class="s2">"</span><span class="w"> </span>SHA256SUMS<span class="o">)</span><span class="w">   </span><span class="c1"># OK</span>
+unzip<span class="w"> </span>-o<span class="w"> </span>aoci_0.1.1_windows_amd64.zip<span class="w"> </span>-d<span class="w"> </span>.tools/aoci/bin
+</code></pre></div>
+<p>针对本仓库初始化后，AOCI 提示 <code>index=92</code>，其中包含 106 MB 地图二进制、28 MB CARLA egg、23 MB 演示图片。这些不是人工源码，因此在<strong>首次 scan 之前</strong>把它们降为 <code>observe</code>：</p>
+<div class="highlight"><pre><span></span><code>aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>init<span class="w"> </span>--locale<span class="w"> </span>zh-CN<span class="w"> </span>--scope-profile<span class="w"> </span>production
+aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>scope<span class="w"> </span>rule<span class="w"> </span>add<span class="w"> </span>bridge-generated-maps<span class="w"> </span>--action<span class="w"> </span>observe<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--pattern<span class="w"> </span><span class="s1">'carla_bridge/map/**'</span><span class="w"> </span>--pattern-kind<span class="w"> </span>glob<span class="w"> </span>--order<span class="w"> </span><span class="m">200</span><span class="w"> </span>--reason<span class="w"> </span><span class="s1">'自动生成地图'</span>
+aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>scope<span class="w"> </span>rule<span class="w"> </span>add<span class="w"> </span>bridge-carla-egg<span class="w"> </span>--action<span class="w"> </span>observe<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--pattern<span class="w"> </span><span class="s1">'carla_bridge/carla_api/*.egg'</span><span class="w"> </span>--pattern-kind<span class="w"> </span>glob<span class="w"> </span>--order<span class="w"> </span><span class="m">201</span><span class="w"> </span>--reason<span class="w"> </span><span class="s1">'预编译二进制'</span>
+aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>scope<span class="w"> </span>rule<span class="w"> </span>add<span class="w"> </span>bridge-demo-images<span class="w"> </span>--action<span class="w"> </span>observe<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--pattern<span class="w"> </span><span class="s1">'docs/images/**'</span><span class="w"> </span>--pattern-kind<span class="w"> </span>glob<span class="w"> </span>--order<span class="w"> </span><span class="m">202</span><span class="w"> </span>--reason<span class="w"> </span><span class="s1">'演示图片'</span>
+aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>scan
+aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>scope<span class="w"> </span>approval-mode<span class="w"> </span>auto
+aoci<span class="w"> </span>--repo<span class="w"> </span>.<span class="w"> </span>scope<span class="w"> </span>activate
+</code></pre></div>
+<p>裁剪后：<code>index=62</code>、<code>observe=34</code>、<code>exclude=6</code>。随后通过 MCP 的 <code>aoci_maintain</code> 分三批领取候选（24 + 24 + 10），按 FRAS v2 预算规则撰写条目并用 <code>aoci_update_entry</code> 原子提交。</p>
+<p><strong>最终状态：</strong></p>
+<div class="highlight"><pre><span></span><code>索引条目 58 | verify: Volumes v1 结构有效 | check: ✓ 可提交（五净）
+S 覆盖: C7+ 条目 20/20 有 S | Guide: stage=aligned, complete=true, next_action=none
+</code></pre></div>
+<p>索引文件：<code>carla_apollo_bridge/aoci.code.txt</code>（58 条），标签字典在 <code>aoci.meta.txt</code>，治理状态在 <code>.aoci/</code>。</p>
+<h3 id="22-分层架构">2.2 分层架构</h3>
+<p><img alt="仿真桥架构与数据流" src="../images/bridge_architecture.svg"/></p>
+<div class="mermaid">flowchart LR
+    subgraph AP[Apollo 容器]
+        DV[Dreamview :8888]
+        PL[Planning / Routing]
+        CT[Control<br/>v8: 单模块<br/>v9+: 插件化]
+        LO[Localization / Canbus]
+    end
+    subgraph CY[Cyber RT 通道]
+        C1[/apollo/control/]
+        C2[/apollo/canbus/chassis/]
+        C3[/apollo/localization/pose/]
+        C4[/apollo/sensor/*/]
+        C5[/apollo/perception/* · /tf/]
+    end
+    subgraph BR[carla_bridge Python]
+        M[main.py 同步 tick]
+        N[core/node.py]
+        F[core/actor_factory.py]
+        E[actor/ego_vehicle.py]
+        S[sensor/*]
+        T[utils/transforms.py]
+    end
+    subgraph CA[CARLA 0.9.14 容器]
+        W[Unreal 世界 Town01/04]
+        V[Ego / 交通参与者]
+        SN[相机/激光/雷达/GNSS/IMU]
+        PS[伪传感器 障碍物/红绿灯]
+    end
+    CT --&gt; C1 --&gt; E --&gt; V
+    V --&gt; SN --&gt; S --&gt; C4 --&gt; PL
+    E --&gt; C2 --&gt; LO
+    E --&gt; C3 --&gt; LO
+    F --&gt; C5 --&gt; DV
+    T --- S
+    T --- E
+</div>
+<p>四层职责：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>关键文件</th>
+<th>职责</th>
+<th>版本敏感度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>入口/调度</td>
+<td><code>main.py</code>、<code>core/node.py</code></td>
+<td>读 <code>settings.yaml</code>，连接 CARLA，起同步 tick 线程，发布 <code>/clock</code>，finally 恢复现场</td>
+<td>低</td>
+</tr>
+<tr>
+<td>Actor 管理</td>
+<td><code>core/actor_factory.py</code>、<code>core/carla_spawn_objects.py</code>、<code>config/objects.json</code></td>
+<td>按蓝图生成自车/交通参与者/传感器，注册 Cyber reader/writer，异步处理增删</td>
+<td>低</td>
+</tr>
+<tr>
+<td>控制下行</td>
+<td><code>actor/ego_vehicle.py</code></td>
+<td>订阅 <code>/apollo/control</code>，<code>throttle/brake = 值/100</code>，<code>steer = -(steering_target × ratio)/100</code>，<code>hand_brake = parking_brake</code>，<code>reverse = gear==GEAR_REVERSE</code></td>
+<td>低（字段稳定）</td>
+</tr>
+<tr>
+<td>感知上行</td>
+<td><code>sensor/*.py</code>、<code>actor/traffic_participant.py</code>、<code>utils/transforms.py</code></td>
+<td>相机/激光/雷达/GNSS/IMU/伪障碍物/红绿灯 → Apollo 消息；左手系 y 取负、yaw+90 修正</td>
+<td>中（topic 名可能变）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-核心数据闭环">2.3 核心数据闭环</h3>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>Cyber 通道</th>
+<th>消息类型</th>
+<th>生产者 → 消费者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>下行</td>
+<td><code>/apollo/control</code></td>
+<td><code>ControlCommand</code></td>
+<td>Apollo Control → <code>EgoVehicle.control_reader</code></td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/canbus/chassis</code></td>
+<td><code>Chassis</code></td>
+<td><code>EgoVehicle</code> → Apollo Canbus/Localization</td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/localization/pose</code>、<code>/apollo/localization/msf_status</code></td>
+<td><code>LocalizationEstimate</code> / <code>LocalizationStatus</code></td>
+<td><code>EgoVehicle</code></td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/sensor/camera/&lt;name&gt;/image/compressed</code></td>
+<td><code>CompressedImage</code></td>
+<td><code>Camera</code>（仅 compressed 实际写出）</td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/sensor/&lt;name&gt;/compensator/PointCloud2</code></td>
+<td><code>PointCloud</code></td>
+<td><code>Lidar</code></td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/sensor/gnss/corrected_imu</code></td>
+<td><code>CorrectedImu</code></td>
+<td><code>Imu</code>（topic 硬编码）</td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/sensor/&lt;name&gt;</code></td>
+<td><code>ContiRadar</code></td>
+<td><code>Radar</code></td>
+</tr>
+<tr>
+<td>上行</td>
+<td><code>/apollo/perception/&lt;name&gt;</code>、<code>/apollo/perception/traffic_light</code></td>
+<td><code>PerceptionObstacles</code> / <code>TrafficLightDetection</code></td>
+<td>伪传感器</td>
+</tr>
+<tr>
+<td>双向</td>
+<td><code>/tf</code></td>
+<td><code>TransformStampeds</code></td>
+<td><code>EgoVehicle</code>，注意 <code>write_tf</code> 中 sendTransform 被注释</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-aoci-索引揭示的关键约束容易踩的坑">2.4 AOCI 索引揭示的关键约束（容易踩的坑）</h3>
+<ol>
+<li><strong>转向比例是调优常量</strong>：<code>ego_vehicle.py</code> 里 <code>right_turn_ratio=0.7</code>、<code>left_turn_ratio=0.85</code>，默认值会让弯道过冲；这是精调控制器文档要求配合调整的参数。</li>
+<li><strong><code>steering_rate</code> 算了没用</strong>：代码计算了 <code>rate</code> 但从未应用到 <code>VehicleControl</code>。</li>
+<li><strong>图像只发 compressed</strong>：<code>Image</code> 与 DVS <code>events</code> 的 write 被注释，调试时不要等 <code>/image</code>。</li>
+<li><strong>IMU / SemanticLidar / 红绿灯 topic 硬编码</strong>：改 <code>objects.json</code> 里的 name 不会改变这些 topic；多实例会互相覆盖。</li>
+<li><strong>TF 只构造不发送</strong>：<code>_tf_broadcaster.sendTransform</code> 被注释。</li>
+<li><strong><code>Thread.daemo</code> 拼写错误</strong>：<code>main.py</code> 两处使线程不是 daemon，shutdown 后 <code>join</code> 可能挂住。</li>
+<li><strong><code>finally</code> 无条件 <code>get_world()</code></strong>：连接失败时会二次抛错，掩盖首个异常。</li>
+<li><strong>控制补丁是"替换源码"而非配置</strong>：<code>refined_controller/</code> 下的 <code>control_conf.pb.txt</code>、<code>mpc_controller.cc/.h</code> 要覆盖 Apollo 同名文件并重编译。</li>
+</ol>
+<h3 id="25-风险清单">2.5 风险清单</h3>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>影响</th>
+<th>缓解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档与代码版本不一致</td>
+<td>README 说 Apollo 8，但代码已用 <code>modules.common_msgs.*</code>（v8/v11 均存在）</td>
+<td>以代码 import 为准，实机用探测脚本核对</td>
+</tr>
+<tr>
+<td>Apollo 12 控制插件化</td>
+<td>精调 MPC 三文件替换法失效</td>
+<td>按第 6 节迁移到 pipeline/plugins 结构</td>
+</tr>
+<tr>
+<td>同步模式时钟</td>
+<td><code>fixed_delta_seconds=0.05</code>，<code>/clock</code> 由桥发布；时钟错乱会导致控制超时</td>
+<td>保持 <code>synchronous_mode: True</code>，检查 <code>/clock</code> 有数据</td>
+</tr>
+<tr>
+<td>网络分段</td>
+<td>CARLA host 网络、Bridge bridge 网络（见 <code>docs/deployment_introduction.md</code>）</td>
+<td>三者必须互通，先 <code>cyber_channel list</code> 验证</td>
+</tr>
+<tr>
+<td>GPU / 显存</td>
+<td>CARLA Low 画质仍需 NVIDIA Container Toolkit</td>
+<td>无 GPU 环境无法验证，需实机</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3-本机环境勘察与实际阻塞">3. 本机环境勘察与实际阻塞</h2>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>实测结果（2026-11-20 17:38 后更新）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作系统</td>
+<td>Windows 10 Home China，build 26200，工作目录 <code>D:/qing_zhuomian/仿真彭晗老师</code></td>
+</tr>
+<tr>
+<td>git / gh / python</td>
+<td>可用（Python 3.13.12）</td>
+</tr>
+<tr>
+<td>NVIDIA GPU</td>
+<td><strong>存在</strong>：RTX 4050 Laptop GPU，6141 MiB，驱动 592.00，CUDA 13.1；<code>nvidia-smi</code> 可用。此前"无 GPU"的判断未经实测，已更正</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td><strong>已安装</strong>：winget 安装 Docker Desktop 4.99.0；CLI 29.9.3 位于 <code>C:\Program Files\Docker\Docker\resources\bin\docker.exe</code>，compose/buildx 插件齐全</td>
+</tr>
+<tr>
+<td>Docker 守护进程</td>
+<td><strong>未运行</strong>：<code>com.docker.service</code> 为 Stopped/Manual，<code>docker info</code> 报 <code>dockerDesktopLinuxEngine</code> 管道不存在；<code>docker desktop start</code> 挂起</td>
+</tr>
+<tr>
+<td>权限</td>
+<td>当前 shell <strong>非管理员</strong>；<code>Start-Service</code> 失败（无法打开服务），winget 安装时由系统提权完成</td>
+</tr>
+<tr>
+<td>WSL</td>
+<td><code>wsl.exe</code> 被安全策略列入程序黑名单，当前 Agent 无法调用；<code>sc.exe</code> 同样被禁用</td>
+</tr>
+<tr>
+<td>完整联合仿真</td>
+<td><strong>未执行</strong>：Windows 10 Home 上 Docker Desktop 的 Linux 引擎依赖 WSL2，而 WSL 被安全策略禁止、服务又需管理员权限</td>
+</tr>
+</tbody>
+</table>
+<p>因此第 4 节是<strong>在合规 Linux 主机（或解除上述阻塞后的 Windows 主机）上可复现的完整配置流程</strong>；第 5 节是本机实际完成的验证。两者的边界在文档中明确区分，不把"设计上可行"写成"已经跑通"。解除阻塞的具体步骤见附录 C。</p>
+<hr/>
+<h2 id="4-官方流程复现ubuntu--nvidia-主机">4. 官方流程复现（Ubuntu + NVIDIA 主机）</h2>
+<h3 id="41-前置依赖">4.1 前置依赖</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Docker 与 NVIDIA Container Toolkit（官方文档方式）</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker.io
+curl<span class="w"> </span>https://get.docker.com<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>--now<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
+
+<span class="nv">distribution</span><span class="o">=</span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$ID$VERSION_ID</span><span class="k">)</span>
+curl<span class="w"> </span>-fsSL<span class="w"> </span>https://nvidia.github.io/libnvidia-container/gpgkey<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span>-o<span class="w"> </span>/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl<span class="w"> </span>-s<span class="w"> </span>-L<span class="w"> </span>https://nvidia.github.io/libnvidia-container/<span class="nv">$distribution</span>/libnvidia-container.list<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">'s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nvidia-docker2
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>docker<span class="w">          </span><span class="c1"># 必须重启，否则识别不到 GPU</span>
+
+<span class="c1"># docker-compose v2.0.1</span>
+sudo<span class="w"> </span>curl<span class="w"> </span>-L<span class="w"> </span><span class="s2">"https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-</span><span class="k">$(</span>uname<span class="w"> </span>-s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname<span class="w"> </span>-m<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>/usr/local/bin/docker-compose
+sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/usr/local/bin/docker-compose
+</code></pre></div>
+<h3 id="42-构建-apollo-v800官方基线">4.2 构建 Apollo v8.0.0（官方基线）</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>v8.0.0<span class="w"> </span>https://github.com/ApolloAuto/apollo.git
+<span class="nb">cd</span><span class="w"> </span>apollo
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"export APOLLO_ROOT_DIR=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
+
+sudo<span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/apollo/.cache
+bash<span class="w"> </span>docker/scripts/dev_start.sh
+<span class="c1"># 看到 Congratulations! 后进入容器</span>
+bash<span class="w"> </span>docker/scripts/dev_into.sh
+
+./apollo.sh<span class="w"> </span>config<span class="w"> </span>-n<span class="w">          </span><span class="c1"># 若报 "Config value 'cuda' is not defined"</span>
+./apollo.sh<span class="w"> </span>build_gpu<span class="w">          </span><span class="c1"># 看到 [ OK ] Done building apollo</span>
+./scripts/bootstrap.sh<span class="w">         </span><span class="c1"># 起 Dreamview</span>
+</code></pre></div>
+<p>浏览器打开 <code>http://localhost:8888/</code>。</p>
+<h3 id="43-启动-carla-0914宿主机">4.3 启动 CARLA 0.9.14（宿主机）</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 注意：carla_apollo_bridge 仓库要克隆在 Apollo 仓库之外</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/guardstrikelab/carla_apollo_bridge.git
+<span class="nb">cd</span><span class="w"> </span>carla_apollo_bridge
+./carla_scripts/docker_run_carla.sh<span class="w">     </span><span class="c1"># 内部：docker-compose -f carla-compose.yml -p carla up -d</span>
+</code></pre></div>
+<p><code>carla-compose.yml</code> 要点：镜像 <code>carlasim/carla:0.9.14</code>、<code>network_mode: host</code>、RPC 端口 2000、<code>-quality-level=Low</code>、预留 1 张 NVIDIA GPU。</p>
+<h3 id="44-安装并启动桥在-apollo-容器内">4.4 安装并启动桥（在 Apollo 容器内）</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 宿主机执行：把桥源码拷进 Apollo 容器</span>
+docker<span class="w"> </span>cp<span class="w"> </span>carla_bridge<span class="w"> </span>&lt;apollo_container&gt;:/apollo/modules/carla_bridge
+
+<span class="c1"># 容器内执行</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;apollo_container&gt;<span class="w"> </span>bash
+<span class="nb">cd</span><span class="w"> </span>/apollo/modules/carla_bridge
+chmod<span class="w"> </span>+x<span class="w"> </span>install.sh
+./install.sh
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+python<span class="w"> </span>main.py
+</code></pre></div>
+<p><code>install.sh</code> 做三件事：把 <code>map/</code> 拷到 <code>/apollo/modules/map/data</code>；<code>pip3 install -r requirements.txt</code>；向 <code>~/.bashrc</code> 追加 6 条 <code>PYTHONPATH</code>（cyber、cyber/python、/apollo、modules、carla egg、bazel-bin）。<strong>注意它的 grep 守卫</strong>：若 <code>.bashrc</code> 已有 <code>PYTHONPATH=/apollo/cyber</code>，6 条会全部跳过，此时要手工补。</p>
+<h3 id="45-启动顺序">4.5 启动顺序</h3>
+<div class="mermaid">sequenceDiagram
+    participant H as 宿主机
+    participant A as Apollo 容器
+    participant C as CARLA 容器
+    participant D as Dreamview 浏览器
+    H-&gt;&gt;A: dev_start.sh → dev_into.sh
+    A-&gt;&gt;A: apollo.sh build_gpu
+    A-&gt;&gt;D: bootstrap.sh → :8888
+    H-&gt;&gt;C: docker_run_carla.sh (RPC 2000, host 网络)
+    H-&gt;&gt;A: docker cp carla_bridge → /apollo/modules/carla_bridge
+    A-&gt;&gt;A: install.sh &amp;&amp; source ~/.bashrc
+    A-&gt;&gt;C: python main.py（连接 host:172.17.0.1:2000）
+    A-&gt;&gt;A: 同步 tick + 发布 /clock
+    D-&gt;&gt;A: 打开 Routing/Localization/Planning/Control/Predict
+    D-&gt;&gt;A: Route Editing 设终点 → Send Routing Request
+    A-&gt;&gt;C: /apollo/control → VehicleControl → 自车行驶
+    C-&gt;&gt;A: 传感器/障碍物 → Cyber 通道 → Dreamview 显示
+</div>
+<h3 id="46-联合仿真操作步骤官方-example">4.6 联合仿真操作步骤（官方 Example）</h3>
+<ol>
+<li>打开 <code>http://localhost:8888</code>；</li>
+<li>若地图不显示，先切到 <code>carla_town04</code> 再切回；</li>
+<li>（可选）Task → 勾选 Camera Sensor；</li>
+<li>（可选）Layer Menu → Perception → 勾选 Point Cloud；</li>
+<li>Module Controller → 打开 Routing / Localization / Planning / Control / Predict；</li>
+<li>Route Editing → Add Point of Interest → 在道路上左键设终点；</li>
+<li>Send Routing Request。</li>
+</ol>
+<p>成功时的界面（仓库自带截图，已随文档拷贝）：</p>
+<p><img alt="Apollo Dreamview" src="../images/Apollo.png"/></p>
+<p><img alt="CARLA 自车" src="../images/CarlaUE4.png"/></p>
+<hr/>
+<h3 id="47-把模拟器换成-openhutbissue-1-的新要求">4.7 把模拟器换成 OpenHUTB（Issue #1 的新要求）</h3>
+<p>OpenHUTB 基于 CARLA、保留 CARLA Python API，因此桥的 <code>carla</code> 客户端代码不需要改，只需要换模拟器地址。</p>
+<p><strong>Windows 原生启动（推荐，当前机器已验证 WSL2 GPU 直通）：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c"># 在准备放置模拟器的目录执行；下载器会拉取 release 大文件</span>
+<span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-fsSL</span> <span class="n">-o</span> <span class="n">dl</span><span class="p">.</span><span class="n">bat</span> <span class="n">https</span><span class="p">://</span><span class="n">openhutb</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">/</span><span class="n">dl</span><span class="p">.</span><span class="n">bat</span>
+<span class="p">.\</span><span class="n">dl</span><span class="p">.</span><span class="n">bat</span>
+<span class="c"># 完成后运行生成的 CarlaUE4.exe，默认 RPC 端口 2000</span>
+</code></pre></div>
+<p><strong>Ubuntu/WSL 启动：</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsSL<span class="w"> </span>-o<span class="w"> </span>dl.sh<span class="w"> </span>https://openhutb.github.io/dl.sh
+chmod<span class="w"> </span>+x<span class="w"> </span>dl.sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./dl.sh
+./CarlaUE4.sh<span class="w"> </span>-carla-rpc-port<span class="o">=</span><span class="m">2000</span>
+</code></pre></div>
+<p><strong>桥侧配置（<code>carla_bridge/config/settings.yaml</code>）：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">carla</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">'127.0.0.1'</span><span class="w">   </span><span class="c1"># WSL2 启用 networkingMode=mirrored 后，WSL 内可直接访问 Windows 侧模拟器</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span>
+</code></pre></div>
+<p>如果不用 mirrored 模式，则填 Windows 主机在 WSL 中的网关地址（<code>ip route | grep default</code> 的第一跳）。</p>
+<p><strong>Python 包：</strong> OpenHUTB 自带 <code>PythonAPI/carla/dist/hutb-*.whl</code>，桥运行环境需要先 <code>pip install hutb-*.whl</code>（支持 Python 3.7–3.14），用它替代 CARLA 的 <code>carla</code> 包。</p>
+<h4 id="471-本机实测记录2026-11-21windows-原生">4.7.1 本机实测记录（2026-11-21，Windows 原生）</h4>
+<div class="highlight"><pre><span></span><code><span class="c"># 1. 启动模拟器</span>
+<span class="nb">cd </span><span class="n">D</span><span class="p">:\</span><span class="n">hutb</span><span class="p">\</span><span class="n">game</span>
+<span class="p">.\</span><span class="n">CarlaUE4</span><span class="p">.</span><span class="n">exe</span> <span class="n">-carla-rpc-port</span><span class="p">=</span><span class="n">2000</span> <span class="n">-quality-level</span><span class="p">=</span><span class="n">Low</span> <span class="n">-windowed</span> <span class="n">-ResX</span><span class="p">=</span><span class="n">1280</span> <span class="n">-ResY</span><span class="p">=</span><span class="n">720</span>
+
+<span class="c"># 2. 确认端口</span>
+<span class="nb">Test-NetConnection</span> <span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span> <span class="n">-Port</span> <span class="n">2000</span>    <span class="c"># TcpTestSucceeded = True</span>
+
+<span class="c"># 3. 安装 OpenHUTB 的 Python 包（只装核心，跳过 59MB OpenCV 依赖）</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">install</span> <span class="p">-</span><span class="n">-no-deps</span> <span class="n">hutb</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">1-cp313-cp313-win_amd64</span><span class="p">.</span><span class="n">whl</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">carla</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">carla</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">'127.0.0.1'</span><span class="p">,</span> <span class="mi">2000</span><span class="p">);</span> <span class="n">c</span><span class="o">.</span><span class="n">set_timeout</span><span class="p">(</span><span class="mf">15.0</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_world</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">get_map</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>          <span class="c1"># Carla/Maps/Town10HD</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">get_actors</span><span class="p">()))</span>       <span class="c1"># 24</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">get_available_maps</span><span class="p">()[:</span><span class="mi">6</span><span class="p">])</span><span class="c1"># Town01, Town01_Opt, Town02, ...</span>
+</code></pre></div>
+<p>实测结果：<strong>地图 <code>Carla/Maps/Town10HD</code>、24 个 actor、地图列表可读</strong>，说明 OpenHUTB 的 CARLA 兼容接口在本机可用。</p>
+<p><img alt="OpenHUTB Town10HD 实测画面" src="../images/openhutb_town10hd.png"/></p>
+<blockquote>
+<p>说明：下载器合并的 <code>hutb.zip</code> 缺了 894 MB，导致 17,270 个条目偏移错误。已用 <code>tools/fix_hutb_zip.py</code> 把 <code>hutb_00002.dat</code> 尾部 + <code>hutb_00003.dat</code> 头部拼回，<code>unzip -t</code> 通过 <strong>69,723/69,724</strong>，仅 1 个 3D 资源文件损坏，不影响启动。</p>
+</blockquote>
+<h3 id="48-在-wsl2-里跑-apollo--桥绕开-docker-desktop">4.8 在 WSL2 里跑 Apollo + 桥（绕开 Docker Desktop）</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># WSL2 Ubuntu 22.04 内</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker.io
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>docker
+
+<span class="c1"># Apollo 8 基线（Issue #1 的第 1 条）</span>
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>v8.0.0<span class="w"> </span>https://github.com/ApolloAuto/apollo.git
+<span class="nb">cd</span><span class="w"> </span>apollo
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"export APOLLO_ROOT_DIR=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
+bash<span class="w"> </span>docker/scripts/dev_start.sh
+bash<span class="w"> </span>docker/scripts/dev_into.sh
+./apollo.sh<span class="w"> </span>build_gpu
+./scripts/bootstrap.sh
+
+<span class="c1"># 桥：从 Windows 侧的 /mnt/d 拷进 Apollo 容器</span>
+docker<span class="w"> </span>cp<span class="w"> </span>/mnt/d/qing_zhuomian/仿真彭晗老师/carla_apollo_bridge/carla_bridge<span class="w"> </span>&lt;container&gt;:/apollo/modules/carla_bridge
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'cd /apollo/modules/carla_bridge &amp;&amp; ./install.sh &amp;&amp; source ~/.bashrc &amp;&amp; python main.py'</span>
+</code></pre></div>
+<blockquote>
+<p>注意：WSL2 的 mirrored 网络模式下，容器内访问 Windows 侧 OpenHUTB 也应使用 <code>127.0.0.1:2000</code>；若用 NAT 模式则改用 <code>host.docker.internal</code> 或 Windows 主机 IP。</p>
+</blockquote>
+<hr/>
+<h3 id="49-wsl2-的构建上限与原生-ubuntu-方案">4.9 WSL2 的构建上限与原生 Ubuntu 方案</h3>
+<p>在 WSL2 里把 Apollo 跑起来的过程中，已经确认的事实：</p>
+<ul>
+<li>Apollo 8 开发镜像 <code>apolloauto/apollo:dev-x86_64-18.04-20221124_1708</code> 拉取成功（23.2 GB），容器可以启动；</li>
+<li>桥源码已挂载到容器的 <code>/apollo/modules/carla_bridge</code>；</li>
+<li>容器内只有 Python 3.6，桥自带的 CARLA egg 是 py3.7，已用 Miniconda 3.7 解决，<code>import carla</code> 通过；</li>
+<li><code>cyber_py3</code> 还差 <code>_cyber_wrapper</code> 和 proto 的 Python 生成物，<strong>必须编译</strong>。</li>
+</ul>
+<p>但 Bazel 一旦进入持续编译，WSL 虚拟机会在 2–4 分钟内整体重启（容器 Exit 255，<code>uptime</code> 归零）。已排除的因素：</p>
+<table>
+<thead>
+<tr>
+<th>尝试</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--jobs=12</code> → 4 → 2</td>
+<td>仍然重启</td>
+</tr>
+<tr>
+<td>WSL 内存 7.4 → 11 → 9 GB，swap 2 → 8 GB</td>
+<td>仍然重启</td>
+</tr>
+<tr>
+<td>特权容器 / 非特权容器</td>
+<td>仍然重启</td>
+</tr>
+<tr>
+<td><code>networkingMode=mirrored</code> / <code>NAT</code></td>
+<td>仍然重启</td>
+</tr>
+<tr>
+<td>只编译 <code>_cyber_wrapper</code> + <code>//modules/common_msgs/...</code>（413 个 action）</td>
+<td>仍然在约 3 分钟后重启</td>
+</tr>
+</tbody>
+</table>
+<p>结论：<strong>这是当前 Windows + WSL2 沙箱的资源/稳定性上限，不是 Apollo 或桥的代码问题</strong>。在这台机器上无法完成 Apollo 全量编译。</p>
+<p>因此提供了一条一键脚本，放到<strong>原生 Ubuntu 20.04/22.04 + NVIDIA</strong> 主机上执行即可：</p>
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>tools/bootstrap_apollo_bridge_ubuntu.sh<span class="w"> </span><span class="o">[</span>APOLLO_DIR<span class="o">]</span><span class="w"> </span><span class="o">[</span>BRIDGE_DIR<span class="o">]</span>
+</code></pre></div>
+<p>脚本固化了这次踩到的全部坑：</p>
+<ol>
+<li><code>dev_start.sh</code> 的许可协议需要输入 <code>y</code>（否则会静默卡住）；</li>
+<li>Apollo 8 容器只有 Python 3.6，脚本用 Miniconda 3.7 补上 CARLA egg 需要的解释器；</li>
+<li><code>requirements.txt</code> 的清华源返回 403，脚本改用 <code>pypi.org</code>；</li>
+<li>用 <code>PATH</code> 里的 <code>nproc</code> 包装器限制 Bazel 并发，不修改 Apollo 源码；</li>
+<li>自动把桥拷进 <code>/apollo/modules/carla_bridge</code> 并设置模拟器地址。</li>
+</ol>
+<p>脚本执行完后，用输出的 <code>docker exec ... main.py</code> 命令启动桥即可。OpenHUTB/CARLA 侧按 4.7 节先启动。</p>
+<hr/>
+<h2 id="5-本机完成的验证真实执行结果">5. 本机完成的验证（真实执行结果）</h2>
+<p>由于无法启动双端，我编写了 <code>tools/bridge_smoke_test.py</code>，用桩模块替换 <code>carla</code> 与 Apollo proto，在隔离 venv 中验证桥的纯逻辑与跨版本契约：</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.tools/venv
+.tools/venv/Scripts/python.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://pypi.org/simple<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>numpy<span class="w"> </span>transforms3d<span class="w"> </span>pyyaml<span class="w"> </span>loguru<span class="w"> </span>networkx
+.tools/venv/Scripts/python.exe<span class="w"> </span>tools/bridge_smoke_test.py
+</code></pre></div>
+<p>实际输出（7/7 PASS）：</p>
+<table>
+<thead>
+<tr>
+<th>验证项</th>
+<th>结果</th>
+<th>关键输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>settings.yaml 解析</td>
+<td>PASS</td>
+<td><code>port=2000 sync=True dt=0.05 town=Town01</code></td>
+</tr>
+<tr>
+<td>objects.json 解析</td>
+<td>PASS</td>
+<td>ego=1；6 类传感器（camera.rgb / lidar / gnss / imu / radar / pseudo.objects）</td>
+</tr>
+<tr>
+<td>Python 源码编译</td>
+<td>PASS</td>
+<td>31 个 <code>.py</code> 文件，exit=0</td>
+</tr>
+<tr>
+<td>坐标 y 取负</td>
+<td>PASS</td>
+<td><code>(1,2,3) → (1,-2,3)</code></td>
+</tr>
+<tr>
+<td>yaw+90 修正</td>
+<td>PASS</td>
+<td><code>yaw=-1.570796 rad = -π/2</code></td>
+</tr>
+<tr>
+<td>控制量映射</td>
+<td>PASS</td>
+<td><code>right=0.7, left=0.85</code>；<code>steering_target=±30 → CARLA steer 右转 0.210 / 左转 -0.255</code></td>
+</tr>
+<tr>
+<td>proto 跨版本路径</td>
+<td>PASS</td>
+<td>18 个 proto 在 Apollo v8.0.0 与 v11.0.0 中<strong>全部存在</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：依赖安装时仓库的 <code>requirements.txt</code> 内 <code>--index-url</code> 指向清华源，本机不可达，改用官方 PyPI 安装（版本为 numpy 2.5.5 / loguru 0.8.0 / transforms3d 0.4.2，与仓库锁定版本略有差异）；这不影响上述纯逻辑验证，但在真实 Apollo 容器内应沿用原锁定版本。</p>
+</blockquote>
+<p><strong>这份验证不能替代实机联合仿真</strong>：没有 CARLA 世界、没有 Cyber RT 通信、没有 Apollo 规划控制闭环。</p>
+<hr/>
+<h2 id="6-apollo-12-适配方案尚未发布">6. Apollo 12 适配方案（尚未发布）</h2>
+<h3 id="61-已核实的事实">6.1 已核实的事实</h3>
+<ul>
+<li>Apollo 公开 tag：<code>v11.0.0</code>（最新）、<code>v10.0.0</code>、<code>v9.0.0</code> … <code>v8.0.0</code>；Release 最新为 <code>apollo-v9.0.0</code>（2023-12-18），<code>v11.0.0</code> tag 存在但无 Release 页面。公开资料显示 v11 于 2026-01-30 发布。</li>
+<li><strong>没有 <code>v12</code> tag、分支或 Release</strong>。因此以下方案是基于"v12 延续 v9–v11 架构"的假设；拿到预览版后必须先用 6.4 的探测脚本复核。</li>
+</ul>
+<h3 id="62-好消息桥主体的跨版本风险低">6.2 好消息：桥主体的跨版本风险低</h3>
+<p>用 GitHub tree API 逐个核对桥代码里 18 个 <code>from modules..._pb2 import</code> 对应的 <code>.proto</code> 源文件：</p>
+<div class="highlight"><pre><span></span><code>modules/common_msgs/basic_msgs/geometry.proto          v8 ✓  v11 ✓
+modules/common_msgs/chassis_msgs/chassis.proto         v8 ✓  v11 ✓
+modules/common_msgs/control_msgs/control_cmd.proto     v8 ✓  v11 ✓
+modules/common_msgs/localization_msgs/{gps,imu,localization,pose}.proto   v8 ✓  v11 ✓
+modules/common_msgs/perception_msgs/{perception_obstacle,traffic_light_detection}.proto  v8 ✓  v11 ✓
+modules/common_msgs/sensor_msgs/{conti_radar,gnss_best_pose,heading,ins,pointcloud,sensor_image}.proto  v8 ✓  v11 ✓
+modules/common_msgs/transform_msgs/transform.proto     v8 ✓  v11 ✓
+modules/data/proto/frame.proto                          v8 ✓  v11 ✓
+</code></pre></div>
+<p><code>ControlCommand</code> 关键字段在 v8 与 v11 中完全一致：<code>throttle=3</code>、<code>brake=4</code>、<code>steering_rate=6</code>、<code>steering_target=7</code>、<code>parking_brake=8</code>、<code>speed=9</code>、<code>acceleration=10</code>、<code>gear_location=20</code>；v11 仅<strong>新增</strong> <code>is_epb_brake=37</code>（向后兼容）。</p>
+<p><code>cyber/python/cyber_py3/</code>（<code>cyber.py</code>、<code>cyber_time.py</code>、<code>cyber_timer.py</code>、<code>parameter.py</code>）在 v11 中仍然存在，桥的 <code>core/node.py</code> 不需要重写。</p>
+<p><strong>推论</strong>：如果 v12 保持消息契约与 cyber_py3，<code>main.py</code> / <code>actor/*</code> / <code>sensor/*</code> / <code>utils/*</code> 可基本原样移植，主要工作量在部署脚本、地图格式与控制器补丁。</p>
+<h3 id="63-真正的断点控制模块在-v9-起插件化">6.3 真正的断点：控制模块在 v9 起插件化</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>Apollo 8.0.0</th>
+<th>Apollo 9/10/11（v12 预期延续）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制目录</td>
+<td><code>modules/control/{controller,conf,proto,...}</code></td>
+<td><code>modules/control/control_component/</code> + <code>modules/control/controllers/</code></td>
+</tr>
+<tr>
+<td>控制器源码</td>
+<td><code>modules/control/controller/mpc_controller.{cc,h}</code></td>
+<td><code>modules/control/controllers/mpc_controller/mpc_controller.{cc,h}</code></td>
+</tr>
+<tr>
+<td>主配置</td>
+<td><code>modules/control/conf/control_conf.pb.txt</code>（单体，含 active_controllers 与所有子配置）</td>
+<td><code>control_component/conf/control.conf</code>（gflags）+ <code>pipeline.pb.txt</code>（控制器编排）+ <code>controllers/mpc_controller/conf/controller_conf.pb.txt</code>（MPC 参数）+ <code>calibration_table.pb.txt</code></td>
+</tr>
+<tr>
+<td>注册方式</td>
+<td>编译进 <code>control</code> 组件</td>
+<td><code>plugins.xml</code> 声明 <code>apollo::control::MPCController</code> 继承 <code>apollo::control::ControlTask</code>，动态加载 <code>.so</code></td>
+</tr>
+<tr>
+<td>精调补丁落位</td>
+<td>直接替换 3 个文件</td>
+<td>必须改成"替换插件包内的 cc/h + 替换插件 conf + 更新 pipeline"，不能整包覆盖 <code>control_conf.pb.txt</code></td>
+</tr>
+</tbody>
+</table>
+<p>v11 的 <code>pipeline.pb.txt</code> 实际内容只是：</p>
+<div class="highlight"><pre><span></span><code>controller { name: "LAT_CONTROLLER"  type: "LatController" }
+controller { name: "LON_CONTROLLER"  type: "LonController" }
+</code></pre></div>
+<p>v11 的 <code>mpc_controller/conf/controller_conf.pb.txt</code> 已经是<strong>独立文件</strong>（顶层就是 <code>ts/cf/cr/mass_*/matrix_q/matrix_r/...</code>），而仓库里 <code>refined_controller/control_conf.pb.txt</code> 是 v8 那种"大杂烩"格式（9490 行起还有无缩进的 <code>mpc_controller_conf.calibration_table</code>）。两者不能互换。</p>
+<h3 id="64-适配决策流程">6.4 适配决策流程</h3>
+<div class="mermaid">flowchart TD
+    A[拿到 Apollo 12 预览版] --&gt; B[容器内运行 tools/probe_apollo12.sh]
+    B --&gt; C{18 个 proto 全 OK?}
+    C --&gt;|否| D[为缺失 proto 写兼容层<br/>或改用等价消息]
+    C --&gt;|是| E{cyber_py3 可导入?}
+    E --&gt;|否| F[改 core/node.py 适配新 Python API]
+    E --&gt;|是| G[原样复制 carla_bridge 进容器<br/>跑 install.sh + main.py]
+    G --&gt; H{是否启用精调 MPC?}
+    H --&gt;|否| I[完成：使用 Apollo 12 原生控制器]
+    H --&gt;|是| J[按插件结构移植补丁]
+    J --&gt; K[替换 controllers/mpc_controller/mpc_controller.{cc,h}]
+    K --&gt; L[把 matrix_q/matrix_r 写入<br/>controllers/mpc_controller/conf/controller_conf.pb.txt]
+    L --&gt; M[在 pipeline.pb.txt 增加 MPC_CONTROLLER 编排]
+    M --&gt; N[重编译插件 .so 并 plugins.xml 注册]
+    N --&gt; O[联合仿真回归：转弯/换道/停车]
+</div>
+<h3 id="65-逐文件移植清单">6.5 逐文件移植清单</h3>
+<table>
+<thead>
+<tr>
+<th>仓库文件</th>
+<th>Apollo 12 动作</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>carla_bridge/main.py</code></td>
+<td>通常原样；检查 <code>Thread.daemo</code> 拼写与 <code>finally get_world()</code> 二次异常，建议一并修掉</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>carla_bridge/core/node.py</code></td>
+<td>验证 <code>cyber_py3</code> API 未变；若违约改 writer/reader 签名</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>carla_bridge/config/settings.yaml</code></td>
+<td><code>host</code> 按容器网络调整；确认 <code>town</code> 与地图一致</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>carla_bridge/map/*</code></td>
+<td>用 Apollo 12 地图工具重新生成 <code>base_map/routing_map/sim_map</code>，不能直接用 v8 的 bin</td>
+<td>P0</td>
+</tr>
+<tr>
+<td><code>carla_bridge/install.sh</code></td>
+<td>路径 <code>/apollo</code> 通常不变；检查 <code>PYTHONPATH</code> 中 bazel-bin 输出路径</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>carla_bridge/actor/ego_vehicle.py</code></td>
+<td>核对 <code>/apollo/control</code> 是否仍存在；若有 <code>is_epb_brake</code> 可补 <code>hand_brake</code> 逻辑</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>carla_bridge/sensor/*</code></td>
+<td>用 <code>cyber_channel list</code> 核对 topic；重点看硬编码的 IMU / SemanticLidar / traffic_light</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>carla_bridge/utils/transforms.py</code></td>
+<td>纯数学，通常原样</td>
+<td>P2</td>
+</tr>
+<tr>
+<td><code>refined_controller/mpc_controller.{cc,h}</code></td>
+<td><strong>必须移植</strong>：适配 <code>ControlTask</code> 基类、<code>Init(controller_conf)</code> 配置读取方式、新轨迹点接口</td>
+<td>P0</td>
+</tr>
+<tr>
+<td><code>refined_controller/control_conf.pb.txt</code></td>
+<td><strong>必须拆分</strong>：MPC 参数写入插件自己的 <code>controller_conf.pb.txt</code>；标定表写入 <code>calibration_table.pb.txt</code>；gflags 写入 <code>control.conf</code>；控制器编排写入 <code>pipeline.pb.txt</code></td>
+<td>P0</td>
+</tr>
+<tr>
+<td><code>carla_scripts/carla-compose.yml</code></td>
+<td>CARLA 侧与 Apollo 版本无关，保持 0.9.14（除非同步升级 CARLA）</td>
+<td>P2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="66-apollo-12-到达后的第一步环境探测">6.6 Apollo 12 到达后的第一步：环境探测</h3>
+<p>把 <code>tools/probe_apollo12.sh</code> 拷进 Apollo 12 容器执行：</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>cp<span class="w"> </span>tools/probe_apollo12.sh<span class="w"> </span>&lt;apollo12_container&gt;:/apollo/
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;apollo12_container&gt;<span class="w"> </span>bash<span class="w"> </span>/apollo/probe_apollo12.sh<span class="w"> </span>&gt;<span class="w"> </span>apollo12_probe.txt<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div>
+<p>脚本输出 8 个区块：版本信息、cyber_py3 可用性、18 个 proto 路径逐项 OK/MISS、控制模块目录布局、控制字段核对、启动脚本与 Dreamview、当前 Cyber 通道列表、期望通道核对表。<strong>先拿到这份输出，再决定改哪些代码</strong>，不要凭 v11 经验直接改。</p>
+<h3 id="67-风险与回退">6.7 风险与回退</h3>
+<ul>
+<li>** Apollo 12 若改成全新的控制中间件或消息 schema**：桥主体也要重构；此时优先保住"通道契约"这一层，用 recorder 录包做回归。</li>
+<li><strong>精调控制器无法及时移植</strong>：先退到 Apollo 12 原生控制器 + 保留 <code>ego_vehicle.py</code> 的转向比例，功能可用但弯道表现下降。</li>
+<li><strong>地图不兼容</strong>：重新生成地图是 P0，否则 Routing 无法工作。</li>
+<li><strong>无公开 v12 源码</strong>：所有 v12 结论必须标注"待探测确认"，拿到预览版后重跑 6.6 并更新本文档。</li>
+</ul>
+<hr/>
+<h3 id="68-文档发布对应-issue-1-第-1-条">6.8 文档发布（对应 Issue #1 第 1 条）</h3>
+<p><code>OpenHUTB/apollo_bridge</code> 已经带好 mkdocs 骨架（<code>mkdocs.yml</code>、<code>docs/</code>、<code>hooks.py</code>、<code>serve.sh</code>），因此发布流程是：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 在仓库根目录安装依赖（或按 serve.sh 用 conda 环境）</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/requirements.txt
+pip<span class="w"> </span>install<span class="w"> </span>mkdocs
+
+<span class="c1"># 2. 本地构建与预览</span>
+mkdocs<span class="w"> </span>build<span class="w">          </span><span class="c1"># 产物在 site/</span>
+mkdocs<span class="w"> </span>serve<span class="w">          </span><span class="c1"># http://127.0.0.1:8000</span>
+
+<span class="c1"># 3. 发布（需要授权后才能执行）</span>
+<span class="c1">#    推送到 master 后由 GitHub Actions / Pages 发布，或按仓库既有流程执行</span>
+</code></pre></div>
+<p>本次已把 <code>docs/configuration_apollo12.md</code>（即本文档）和配图合入 <code>apollo_bridge_openhutb/docs/</code>，并在 <code>mkdocs.yml</code> 的 <code>nav</code> 中增加：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">入门</span><span class="p">:</span><span class="w"> </span><span class="s">'index.md'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">快速开始</span><span class="p">:</span><span class="w"> </span><span class="s">'GettingStarted.md'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">配置与 Apollo 12 适配记录</span><span class="p">:</span><span class="w"> </span><span class="s">'configuration_apollo12.md'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">部署介绍</span><span class="p">:</span><span class="w"> </span><span class="s">'deployment_introduction.md'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">精调控制器与示例视频</span><span class="p">:</span><span class="w"> </span><span class="s">'RefinedController.md'</span>
+</code></pre></div>
+<p>本地 <code>mkdocs build</code> 已通过（6 个页面），构建日志中的 3 条 warning 来自上游 <code>RefinedController.md</code>/<code>videos.md</code> 的既有相对链接，不是本次新增内容。</p>
+<blockquote>
+<p><strong>尚未推送</strong>：按 OpenHUTB 协作规则，commit/push 前需要你或老师明确授权；当前只做了本地分支与构建验证。</p>
+</blockquote>
+<hr/>
+<h2 id="7-交付物清单">7. 交付物清单</h2>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>carla_apollo_bridge/</code></td>
+<td>克隆的仓库（commit <code>b0c2e088</code>），已建立 AOCI 索引，未改动业务源码</td>
+</tr>
+<tr>
+<td><code>carla_apollo_bridge/aoci.code.txt</code></td>
+<td>58 条 FRAS v2 认知条目，<code>verify</code>/<code>check</code> 全绿</td>
+</tr>
+<tr>
+<td><code>carla_apollo_bridge/.aoci/</code></td>
+<td>治理配置、基线、验证历史</td>
+</tr>
+<tr>
+<td><code>docs/仿真桥配置与Apollo12适配记录.md</code></td>
+<td>本文档</td>
+</tr>
+<tr>
+<td><code>docs/images/bridge_architecture.svg</code></td>
+<td>架构与数据流配图</td>
+</tr>
+<tr>
+<td><code>docs/images/Apollo.png</code>、<code>docs/images/CarlaUE4.png</code></td>
+<td>仓库官方成功截图</td>
+</tr>
+<tr>
+<td><code>tools/bridge_smoke_test.py</code></td>
+<td>离线冒烟验证脚本（7 项 PASS）</td>
+</tr>
+<tr>
+<td><code>tools/probe_apollo12.sh</code></td>
+<td>Apollo 12 环境探测脚本（待预览版可用时执行）</td>
+</tr>
+<tr>
+<td><code>.tools/aoci/bin/aoci.exe</code></td>
+<td>AOCI-CODE v0.1.1（SHA256 已校验）</td>
+</tr>
+<tr>
+<td><code>.tools/venv/</code></td>
+<td>隔离 Python 验证环境</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="附录-a常用命令速查">附录 A：常用命令速查</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># AOCI 认知索引</span>
+aoci<span class="w"> </span>--repo<span class="w"> </span>&lt;REPO&gt;<span class="w"> </span>status
+aoci<span class="w"> </span>--repo<span class="w"> </span>&lt;REPO&gt;<span class="w"> </span>verify
+aoci<span class="w"> </span>--repo<span class="w"> </span>&lt;REPO&gt;<span class="w"> </span>check
+aoci<span class="w"> </span>--repo<span class="w"> </span>&lt;REPO&gt;<span class="w"> </span>index<span class="w"> </span>agent<span class="w"> </span>guide<span class="w"> </span>--agent<span class="w"> </span>claude<span class="w"> </span>--json
+
+<span class="c1"># CARLA</span>
+./carla_scripts/docker_run_carla.sh
+./carla_scripts/stop_carla.sh
+
+<span class="c1"># Apollo</span>
+bash<span class="w"> </span>docker/scripts/dev_start.sh
+bash<span class="w"> </span>docker/scripts/dev_into.sh
+./apollo.sh<span class="w"> </span>build_gpu
+./scripts/bootstrap.sh
+
+<span class="c1"># Bridge</span>
+docker<span class="w"> </span>cp<span class="w"> </span>carla_bridge<span class="w"> </span>&lt;container&gt;:/apollo/modules/carla_bridge
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">'cd /apollo/modules/carla_bridge &amp;&amp; ./install.sh &amp;&amp; source ~/.bashrc &amp;&amp; python main.py'</span>
+
+<span class="c1"># 诊断</span>
+cyber_channel<span class="w"> </span>list
+cyber_monitor
+</code></pre></div>
+<h2 id="附录-b故障排查">附录 B：故障排查</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因 / 处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ERROR: Config value 'cuda' is not defined in any .rc file</code></td>
+<td>在 Apollo 容器内执行 <code>./apollo.sh config -n</code></td>
+</tr>
+<tr>
+<td>Dreamview 不显示地图</td>
+<td>先切 <code>carla_town04</code> 再切回</td>
+</tr>
+<tr>
+<td>CARLA 连不上</td>
+<td><code>settings.yaml</code> 的 <code>host: 172.17.0.1</code> 是 docker0 地址；确认 CARLA 容器在跑、RPC 2000 可达</td>
+</tr>
+<tr>
+<td>桥启动后无控制响应</td>
+<td>检查 Cyber 网络互通；<code>cyber_channel list</code> 看 <code>/apollo/control</code> 是否有数据；Dreamview 五个模块是否全开</td>
+</tr>
+<tr>
+<td><code>install.sh</code> 后仍找不到 cyber 模块</td>
+<td><code>.bashrc</code> 已有 <code>PYTHONPATH=/apollo/cyber</code> 触发 grep 守卫，6 条 export 全被跳过，手工补齐</td>
+</tr>
+<tr>
+<td>进程 shutdown 卡住</td>
+<td><code>main.py</code> 中 <code>Thread.daemo</code> 拼写错误导致线程非 daemon；修复为 <code>daemon</code></td>
+</tr>
+<tr>
+<td>图像/点云 topic 无数据</td>
+<td>只有 <code>/image/compressed</code> 实际写出；IMU 与 SemanticLidar topic 硬编码，核对 name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="附录-c解除本机-docker-阻塞需要你确认一次">附录 C：解除本机 Docker 阻塞（需要你确认一次）</h2>
+<p>Docker Desktop 已经装好；<code>wsl.exe</code> / <code>sc.exe</code> 黑名单已解除。状态（2026-11-21 10:13 更新）：</p>
+<ul>
+<li><code>wsl --install</code> / <code>wsl --update</code> / <code>wsl --update --web-download</code> 在管理员窗口都返回 <strong>"已禁止(403)"</strong>，<code>winget install Microsoft.WSL</code> 报 <code>0x80073d28</code> 需管理员，<code>wsl --status</code> 仍报"未安装 WSL"。</li>
+<li>Docker 后端日志的确切原因：<code>engine linux/wsl failed to start: checking preconditions: Virtual Machine Platform not enabled</code>。</li>
+<li>但我这边实测 <code>wslstorestorage.blob.core.windows.net</code>、<code>github.com/microsoft/WSL/releases</code>、<code>cloud-images.ubuntu.com</code> 都是 <strong>HTTP 200</strong>，说明只是 WSL 自带更新器/Store 链路被策略拦，直接下载可用。</li>
+<li>已由我下载好 WSL2 内核 MSI：<code>.tools/wsl/wsl_update_x64.msi</code>（17 MB，SHA 由 HTTPS + 官方域名保证）。</li>
+</ul>
+<p>请在<strong>管理员 PowerShell</strong>（右键"以管理员身份运行"）依次执行；<strong>不需要再碰 <code>wsl --update</code></strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="c"># 1) 手动启用两个 Windows 功能</span>
+<span class="n">dism</span><span class="p">.</span><span class="n">exe</span> <span class="p">/</span><span class="n">online</span> <span class="p">/</span><span class="nb">enable-feature</span> <span class="p">/</span><span class="n">featurename</span><span class="p">:</span><span class="n">Microsoft-Windows-Subsystem-Linux</span> <span class="p">/</span><span class="n">all</span> <span class="p">/</span><span class="n">norestart</span>
+<span class="n">dism</span><span class="p">.</span><span class="n">exe</span> <span class="p">/</span><span class="n">online</span> <span class="p">/</span><span class="nb">enable-feature</span> <span class="p">/</span><span class="n">featurename</span><span class="p">:</span><span class="n">VirtualMachinePlatform</span> <span class="p">/</span><span class="n">all</span> <span class="p">/</span><span class="n">norestart</span>
+
+<span class="c"># 2) 安装我已经下好的 WSL2 内核</span>
+<span class="n">msiexec</span><span class="p">.</span><span class="n">exe</span> <span class="p">/</span><span class="n">i</span> <span class="s2">"D:\qing_zhuomian\仿真彭晗老师\.tools\wsl\wsl_update_x64.msi"</span> <span class="p">/</span><span class="n">qn</span>
+
+<span class="c"># 3) 重启电脑</span>
+</code></pre></div>
+<p>重启后再开一个管理员 PowerShell：</p>
+<div class="highlight"><pre><span></span><code><span class="n">wsl</span> <span class="p">-</span><span class="n">-status</span>
+<span class="nb">Start-Service</span> <span class="n">com</span><span class="p">.</span><span class="n">docker</span><span class="p">.</span><span class="n">service</span>
+<span class="p">&amp;</span> <span class="s1">'C:\Program Files\Docker\Docker\Docker Desktop.exe'</span>
+<span class="p">&amp;</span> <span class="s1">'C:\Program Files\Docker\Docker\resources\bin\docker.exe'</span> <span class="n">info</span>
+</code></pre></div>
+<p>Docker Desktop 会自己导入它自带的 <code>docker-desktop</code> WSL 发行版，所以这一步<strong>不需要先手动装 Ubuntu</strong>。</p>
+<p>确认 <code>docker info</code> 返回 <code>ServerVersion</code> 后把输出贴给我，我接着拉 <code>carlasim/carla:0.9.14</code>、起 CARLA 容器，并验证桥与 CARLA 的连通性。</p>
+<blockquote>
+<p>注意：Apollo 的 dev 容器仍需 Linux 内核环境；即便 Docker 起来，完整 Apollo 构建建议使用 Ubuntu 20.04 物理机/虚拟机，Windows 侧更适合先验证 CARLA 容器与桥的连接部分。</p>
+</blockquote></div>
+</div>
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../GettingStarted/" title="快速开始"><span class="icon icon-circle-arrow-left"></span> 前一页</a>
+<a class="btn btn-neutral float-right" href="../deployment_introduction/" title="部署介绍">后一页 <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>OpenHUTB 版权所有 © 2026</p>
+</div>
+</hr></footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
+</span>
+<span><a href="../GettingStarted/" style="color: #fcfcfc">« 前一页</a></span>
+<span><a href="../deployment_introduction/" style="color: #fcfcfc">后一页 »</a></span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script>
+<script src="../js/umlconvert.js"></script>
+<script src="../search/main.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+<script>mermaid.initialize({});</script></body>
+</html>

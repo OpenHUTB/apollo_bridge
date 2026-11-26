@@ -13,7 +13,7 @@
 <link href="extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u4e3b\u9875";
+        var mkdocs_page_name = "\u5165\u95e8";
         var mkdocs_page_input_path = "index.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,17 +37,15 @@
 </div>
 <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="#">主页</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">入门</a>
 <ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="#1-文档导航">1. 文档导航 </a>
+<li class="toctree-l2"><a class="reference internal" href="#1-简介">1. 简介 </a>
 <ul>
-<li class="toctree-l3"><a class="reference internal" href="#11-入门与完整部署指南">1.1 入门与完整部署指南</a>
+<li class="toctree-l3"><a class="reference internal" href="#11-入门">1.1 入门</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#12-常见问题与排障手册">1.2 常见问题与排障手册</a>
+<li class="toctree-l3"><a class="reference internal" href="#12-示例视频">1.2 示例视频</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#13-改进控制器与示例视频">1.3 改进控制器与示例视频</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#14-网络架构与部署原理">1.4 网络架构与部署原理</a>
+<li class="toctree-l3"><a class="reference internal" href="#13-部署介绍">1.3 部署介绍</a>
 </li>
 </ul>
 </li>
@@ -55,19 +53,23 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="GettingStarted/">入门与完整部署</a>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/">快速开始</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Troubleshooting/">常见问题排查</a>
+<li class="toctree-l1"><a class="reference internal" href="configuration_apollo12/">配置与 Apollo 12 适配记录</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="RefinedController/">示例视频与控制器</a>
+<li class="toctree-l1"><a class="" href="PR">None</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="deployment_introduction/">网络与部署原理</a>
+<li class="toctree-l1"><a class="reference internal" href="deployment_introduction/">部署介绍</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="RefinedController/">精调控制器与示例视频</a>
 </li>
 </ul>
 </div>
@@ -82,7 +84,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="Docs" class="icon icon-home" href="."></a></li>
-<li class="breadcrumb-item active">主页</li>
+<li class="breadcrumb-item active">入门</li>
 <li class="wy-breadcrumbs-aside">
 <a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/index.md"> 编辑页面</a>
 </li>
@@ -92,23 +94,18 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <div><h1 id="openhutb-与-apollo-的仿真桥"><a href="https://github.com/OpenHUTB/apollo_bridge">OpenHUTB 与 Apollo 的仿真桥</a></h1>
-<p>欢迎使用 <strong>OpenHUTB / CARLA 与百度 Apollo 的仿真桥（apollo_bridge）</strong> 中文文档。</p>
+<p>欢迎使用 OpenHUTB 模拟器与 Apollo 的仿真桥文档。</p>
 <hr/>
-<h2 id="1-文档导航">1. 文档导航 <span id="introduction"></span></h2>
-<h3 id="11-入门与完整部署指南">1.1 <a href="GettingStarted/"><strong>入门与完整部署指南</strong></a></h3>
-<p>从环境准备、Apollo <code>v8.0.0</code> 编译与补丁配置、CARLA <code>0.9.14</code> 部署，到 Dreamview 交互与闭环验证的完整手把手操作手册。</p>
-<h3 id="12-常见问题与排障手册">1.2 <a href="Troubleshooting/"><strong>常见问题与排障手册</strong></a></h3>
-<p>汇总部署、编译、控制器防蠕动/防急停、Dreamview 安全模式告警与路由选点、以及 CARLA Vulkan <code>Xid 31</code> 闪退等 16 项实战问题与解决方案。</p>
-<h3 id="13-改进控制器与示例视频">1.3 <a href="RefinedController/"><strong>改进控制器与示例视频</strong></a></h3>
-<p>介绍仓库内置的 <code>refined_controller</code> 调优 MPC 控制器及参数调优方法。</p>
-<h3 id="14-网络架构与部署原理">1.4 <a href="deployment_introduction/"><strong>网络架构与部署原理</strong></a></h3>
-<p>说明仿真桥、CARLA 与 Apollo 容器间的网络拓扑与通信原理。</p>
+<h2 id="1-简介">1. 简介 <span id="introduction"></span></h2>
+<h3 id="11-入门">1.1 <a href="GettingStarted/"><strong>入门</strong></a></h3>
+<h3 id="12-示例视频">1.2 <a href="RefinedController/"><strong>示例视频</strong></a></h3>
+<h3 id="13-部署介绍">1.3 <a href="deployment_introduction/"><strong>部署介绍</strong></a></h3>
 <hr/>
-<p>如果对文档或仿真桥适配存在任何问题，欢迎在 <a href="https://github.com/OpenHUTB/apollo_bridge/issues">Issue 页面</a> 讨论，或参考 <a href="https://github.com/OpenHUTB/.github/blob/master/CONTRIBUTING.md">贡献指南</a> 提交拉取请求（Pull Request）。</p></div>
+<p>如果对文档中的任何问题可以在<a href="https://github.com/OpenHUTB/apollo_bridge/issues">问题</a>或<a href="https://mp.weixin.qq.com/s/Fxfh98b-UEpJhbINDjroJQ">公众号</a>页面讨论或者提交<a href="https://github.com/OpenHUTB/.github/blob/master/CONTRIBUTING.md">拉取请求</a>直接修改文档。</p></div>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-right" href="GettingStarted/" title="入门与完整部署">后一页 <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral float-right" href="GettingStarted/" title="快速开始">后一页 <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr>
 <div role="contentinfo">
@@ -149,5 +146,5 @@
 </html>
 <!--
 MkDocs version : 1.5.9
-Build Date UTC : 2026-11-25 04:30:52.088754+00:00
+Build Date UTC : 2026-11-26 07:06:04.041488+00:00
 -->

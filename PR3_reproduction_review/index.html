@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../img/favicon.ico" rel="shortcut icon"/>
+<title>PR #3 复现记录与评审意见 - 仿真桥</title>
+<link href="../css/theme.css" rel="stylesheet"/>
+<link href="../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../extra.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "PR #3 \u590d\u73b0\u8bb0\u5f55\u4e0e\u8bc4\u5ba1\u610f\u89c1";
+        var mkdocs_page_input_path = "PR3_reproduction_review.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href=".."> 仿真桥
+        </a><div role="search">
+<form action="../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="搜索文档" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="..">入门</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted/">快速开始</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_apollo12/">配置与 Apollo 12 适配记录</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="" href="../PR">None</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../deployment_introduction/">部署介绍</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">精调控制器与示例视频</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="..">仿真桥</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
+<li class="breadcrumb-item active">PR #3 复现记录与评审意见</li>
+<li class="wy-breadcrumbs-aside">
+<a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/PR3_reproduction_review.md"> 编辑页面</a>
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<div><h1 id="pr-3-复现记录与评审意见">PR #3 复现记录与评审意见</h1>
+<blockquote>
+<p>复现对象：<code>OpenHUTB/apollo_bridge</code> PR #3（已合并）
+复现环境：Windows 11 + WSL2 Ubuntu 22.04（9.7 GiB RAM / 16 GiB swap）
+复现时间：2026-11-25 ～ 2026-11-26</p>
+</blockquote>
+<h2 id="1-复现结论先说结果">1. 复现结论（先说结果）</h2>
+<table>
+<thead>
+<tr>
+<th>环节</th>
+<th>结果</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apollo v8.0.0 源码</td>
+<td>✅ 完成</td>
+<td><code>--depth 1 --branch v8.0.0</code></td>
+</tr>
+<tr>
+<td>Apollo 开发镜像</td>
+<td>✅ 完成</td>
+<td><code>apolloauto/apollo:dev-x86_64-18.04-20221124_1708</code></td>
+</tr>
+<tr>
+<td>精简模块编译</td>
+<td>✅ 完成</td>
+<td><strong>2988 actions，Build completed successfully</strong></td>
+</tr>
+<tr>
+<td>Dreamview</td>
+<td>✅ 完成</td>
+<td><code>http://127.0.0.1:8888/</code> 返回 200；<code>Carla Bridge</code> 模式可识别</td>
+</tr>
+<tr>
+<td><code>carla_bridge</code> 启动</td>
+<td>✅ 能启动并连到 RPC 2000</td>
+<td>日志：<code>Trying to connect to 127.0.0.1:2000</code></td>
+</tr>
+<tr>
+<td>CARLA 0.9.14 模拟器</td>
+<td>❌ 未拿到</td>
+<td>S3 403；Docker Hub 8.8 GB 层反复断；南科大镜像被 Anubis 拦截</td>
+</tr>
+<tr>
+<td>端到端闭环</td>
+<td>❌ 未完成</td>
+<td>缺 CARLA 0.9.14；OpenHUTB 2.10.1 与 0.9.14 客户端不兼容</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句话</strong>：Apollo 侧已经复现成功；模拟器侧被 CARLA 0.9.14 的下载挡住，不是代码/编译问题。</p>
+<h2 id="2-关键发现wsl-不是崩是最后一个会话退出后自动关机">2. 关键发现：WSL 不是“崩”，是最后一个会话退出后自动关机</h2>
+<p>之前多次看到 Bazel 编译 2–4 分钟后 WSL <code>uptime</code> 归零、容器 <code>Exit 255</code>，一度判断为 WSL 不稳定。实际日志：</p>
+<div class="highlight"><pre><span></span><code>WSL (2 - init-systemd(Ubuntu-22.04)) ERROR:
+InitTerminateInstanceInternal:2928:
+systemctl poweroff did not terminate the instance in 10000 ms,
+calling reboot(RB_POWER_OFF)
+</code></pre></div>
+<p>原因：编译是用 <code>docker exec -d</code> 起的，启动命令很快退出；WSL 在最后一个 <code>wsl.exe</code> 会话结束后把发行版整个关掉，编译进程被一起带走。</p>
+<p><strong>解决办法</strong>：保持一个常驻会话，例如：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 另开一个终端/后台任务，保持 WSL 活着</span>
+wsl<span class="w"> </span>-d<span class="w"> </span>Ubuntu-22.04<span class="w"> </span>-u<span class="w"> </span>root<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-lc<span class="w"> </span><span class="s2">"while true; do sleep 60; done"</span>
+</code></pre></div>
+<p>之后同样的 2988 actions 编译一次通过。这一点建议补进 PR #3 的文档，作为“子系统/WSL2”章节的核心注意事项。</p>
+<h2 id="3-已实际执行的步骤">3. 已实际执行的步骤</h2>
+<h3 id="31-恢复-wsl-与-docker">3.1 恢复 WSL 与 Docker</h3>
+<div class="highlight"><pre><span></span><code>wsl<span class="w"> </span>--import<span class="w"> </span>Ubuntu-22.04<span class="w"> </span>D:<span class="se">\w</span>sl<span class="se">\U</span>buntu-22.04<span class="w"> </span>&lt;rootfs.tar.xz&gt;<span class="w"> </span>--version<span class="w"> </span><span class="m">2</span>
+<span class="c1"># /etc/wsl.conf 开启 systemd</span>
+<span class="o">[</span>boot<span class="o">]</span>
+<span class="nv">systemd</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>Docker 用官方静态包（<code>docker-24.0.9.tgz</code>）安装，<code>dockerd</code> 由 systemd 拉起。</p>
+<h3 id="32-apollo-源码与补丁">3.2 Apollo 源码与补丁</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--branch<span class="w"> </span>v8.0.0<span class="w"> </span>https://github.com/ApolloAuto/apollo.git<span class="w"> </span>/root/apollo
+cp<span class="w"> </span>-r<span class="w"> </span>carla_bridge<span class="w"> </span>/root/apollo/modules/carla_bridge
+python3<span class="w"> </span>tools/apply_pr3_patches.py
+</code></pre></div>
+<p>补丁脚本按 PR #3 文档落实了：</p>
+<ul>
+<li><code>refined_controller</code> 三个文件；</li>
+<li><code>mpc_controller.h</code> 头文件路径改为 <code>modules/common_msgs/config_msgs/vehicle_config.pb.h</code>；</li>
+<li><code>enable_persistent_estop: false</code>；</li>
+<li><code>mpc_controller_conf.standstill_acceleration: -1.0</code>；</li>
+<li><code>control_component.cc</code> 的 <code>not_ready</code> 制动保持；</li>
+<li>5 模块 <code>carla_bridge.pb.txt</code>；</li>
+<li><code>--map_dir=/apollo/modules/map/data/carla_town01</code>；</li>
+<li>Town01 三个预设终点。</li>
+</ul>
+<h3 id="33-精简编译">3.3 精简编译</h3>
+<div class="highlight"><pre><span></span><code>bazel<span class="w"> </span>build<span class="w"> </span>--config<span class="o">=</span>cpu<span class="w"> </span>--disk_cache<span class="o">=</span><span class="w"> </span>--copt<span class="o">=</span>-mavx2<span class="w"> </span>--host_copt<span class="o">=</span>-mavx2<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--jobs<span class="o">=</span><span class="m">2</span><span class="w"> </span>--local_ram_resources<span class="o">=</span><span class="m">4096</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//cyber/mainboard:mainboard<span class="w"> </span>//cyber/tools/...<span class="w"> </span>//cyber/python/cyber_py3/...<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/common_msgs/...<span class="w"> </span>//modules/data/proto/...<span class="w"> </span>//modules/dreamview:dreamview<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/monitor:libmonitor.so<span class="w"> </span>//modules/routing:librouting_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/localization/rtk:librtk_localization_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/localization/msf:libmsf_localization_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/prediction:libprediction_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/planning:libplanning_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/control:libcontrol_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/transform:libstatic_transform_component.so<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>//modules/storytelling:libstorytelling_component.so
+</code></pre></div>
+<p>结果：<code>Build completed successfully, 2988 total actions</code>。关键产物齐全：</p>
+<div class="highlight"><pre><span></span><code>bazel-bin/cyber/mainboard/mainboard
+bazel-bin/modules/dreamview/dreamview
+bazel-bin/modules/control/libcontrol_component.so
+bazel-bin/modules/planning/libplanning_component.so
+</code></pre></div>
+<h3 id="34-dreamview">3.4 Dreamview</h3>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/apollo/scripts/apollo_base.sh
+<span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/usr/local/libtorch_cpu/lib:<span class="nv">$LD_LIBRARY_PATH</span>
+start<span class="w"> </span>monitor
+start<span class="w"> </span>dreamview
+</code></pre></div>
+<p><code>curl http://127.0.0.1:8888/</code> 返回 200；Dreamview 顶部可以选到自定义的 <strong>Carla Bridge</strong> 模式、<strong>Mkz Example</strong> 车型、<strong>Carla Town01</strong> 地图。</p>
+<p><img alt="Dreamview 启动" src="images/apollo_dreamview_wsl.png"/></p>
+<p><img alt="Carla Bridge 模式" src="images/apollo_dreamview_carla_bridge.png"/></p>
+<h3 id="35-桥连接模拟器">3.5 桥连接模拟器</h3>
+<p><code>config/settings.yaml</code> 的 host 从默认 <code>172.17.0.1</code> 改成 <code>127.0.0.1</code>（容器 <code>--net host</code> + WSL 镜像网络），桥能连到 2000 端口：</p>
+<div class="highlight"><pre><span></span><code>Trying to connect to 127.0.0.1:2000
+WARNING: Version mismatch detected ...
+WARNING: Client API version     = 0.9.14
+WARNING: Simulator API version  = 3ea2130ed
+terminate called after throwing an instance of 'std::bad_alloc'
+</code></pre></div>
+<p>这说明桥本身已经走到“连接模拟器”这一步，失败点是 <strong>CARLA 客户端版本不匹配</strong>。</p>
+<h2 id="4-模拟器侧的问题">4. 模拟器侧的问题</h2>
+<h3 id="41-carla-0914-下载受阻">4.1 CARLA 0.9.14 下载受阻</h3>
+<p>已尝试：</p>
+<table>
+<thead>
+<tr>
+<th>渠道</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>官方 S3 <code>carla-releases.s3...</code></td>
+<td>301/403（桶策略或网络限制）</td>
+</tr>
+<tr>
+<td>Docker Hub <code>carlasim/carla:0.9.14</code></td>
+<td>8.8 GB 主层反复 <code>Retrying...</code>，无法完成</td>
+</tr>
+<tr>
+<td>南科大镜像 <code>mirrors.sustech.edu.cn/carla/</code></td>
+<td>Anubis 反爬拦截（错误码 <code>4d1dbaddfcc0f385</code>）</td>
+</tr>
+<tr>
+<td>其他高校镜像</td>
+<td>无 <code>/carla</code> 路径</td>
+</tr>
+</tbody>
+</table>
+<p>因此当前环境拿不到 CARLA 0.9.14。</p>
+<h3 id="42-openhutb-2101-不能直接替代">4.2 OpenHUTB 2.10.1 不能直接替代</h3>
+<p>本机 OpenHUTB 2.10.1 可以正常启动（Town10HD、24 个 actor、RPC 2000），但桥自带的 <code>carla-0.9.14-py3.7</code> 客户端连它会在版本校验后 <code>std::bad_alloc</code>。也就是说：</p>
+<ul>
+<li>PR #3 的基线必须用 <strong>CARLA 0.9.14</strong>；</li>
+<li>要跑 OpenHUTB，需要换成 OpenHUTB 自己的 Linux 客户端（或做协议适配），这不是改一个 host 能解决的。</li>
+</ul>
+<h2 id="5-对-pr-3-文档的评审意见">5. 对 PR #3 文档的评审意见</h2>
+<h3 id="51-值得肯定">5.1 值得肯定</h3>
+<ul>
+<li>精简模块编译的目标列表很实用，确实把 3492/2988 actions 控制住了；</li>
+<li><code>refined_controller</code> 头文件路径、<code>enable_persistent_estop</code>、<code>standstill_acceleration</code>、<code>not_ready</code> 制动这 4 个补丁都打在关键点上；</li>
+<li><code>carla_bridge.pb.txt</code> 5 模块 HMI 模式解决了安全模式红框；</li>
+<li>排障手册的 16 条现象—原因—解决结构清楚，可直接复用。</li>
+</ul>
+<h3 id="52-建议补充修正">5.2 建议补充/修正</h3>
+<ol>
+<li><strong>补 WSL2 章节</strong>：这是老师明确要的“子系统”部分。至少写清楚：</li>
+<li>最后一个 <code>wsl.exe</code> 会话退出会触发 <code>systemctl poweroff</code>，编译必须用常驻会话；</li>
+<li><code>networkingMode=mirrored</code> 下 Windows 的 <code>127.0.0.1</code> 可从 WSL/容器访问；</li>
+<li>Docker 需要单独配代理，国内拉 Docker Hub 会卡大层；</li>
+<li>WSL 内存/swap 建议（本机 9.7 GiB + 16 GiB swap 可编译 2988 actions）。</li>
+<li><strong><code>deployment_introduction.md</code> 仍引用不存在的路径</strong>：正文里的 <code>carla_apollo_bridge/scripts</code>、<code>carla_apollo_bridge/docker</code> 在当前仓库已不存在；顶部虽有提示，但正文容易误导，建议直接改成 <code>carla_scripts/</code> 并删掉旧的三容器描述。</li>
+<li><strong><code>install.sh</code> 的清华源</strong>：<code>requirements.txt</code> 第一行是 <code>--index-url https://pypi.tuna.tsinghua.edu.cn/simple</code>，部分网络会返回 403（本次复现就遇到）。建议在文档里加 <code>-i https://pypi.org/simple</code> 的回退，或直接删掉这行。</li>
+<li><strong>精简目标还能再砍</strong>：文档说“不要开 Localization”，但编译目标里仍包含 <code>//modules/localization/rtk</code> 和 <code>//modules/localization/msf</code>，可以删掉，进一步省时间和磁盘。</li>
+<li><strong><code>--pid=host</code> 的风险</strong>：文档自己也警告了 <code>pkill</code> 会误杀宿主机。桥和 Dreamview 并不需要共享 PID 命名空间，建议默认去掉 <code>--pid=host</code>，只在确实需要时加。</li>
+<li><strong>CARLA 0.9.14 的获取方式</strong>：官方 S3 链接在当前网络不可用，南科大镜像又被 Anubis 拦截。建议文档给一个<strong>离线包/网盘/内部制品</strong>的兜底，而不是只写官方链接。</li>
+<li><strong>Python 3.6 + py3.7 egg 的说明可以更明确</strong>：本次实测确实能 <code>import carla</code>（<code>libcarla.py</code> 用 <code>importlib</code> 直接加载 <code>.so</code>），但这是“能跑但不受官方支持”的边界，建议注明“若报 ABI/符号错误，升级到 Python 3.7 或换 OpenHUTB 客户端”。</li>
+</ol>
+<h2 id="6-下一步">6. 下一步</h2>
+<ol>
+<li>拿到 CARLA 0.9.14 的离线包（或可用镜像）后，按本文第 3 节直接启动，即可完成 PR #3 的端到端复现；</li>
+<li>若要继续 Issue #1 的第 2 条（Apollo + OpenHUTB），需要把 <code>carla_api</code> 换成 OpenHUTB 的 Linux 客户端，或让 OpenHUTB 提供 0.9.14 兼容的 RPC 层；</li>
+<li>本文的 WSL 常驻会话、Docker 代理、<code>127.0.0.1</code> 连接方式可以直接补进 PR #3 文档的“子系统”章节。</li>
+</ol></div>
+</div>
+</div><footer>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+<p>OpenHUTB 版权所有 © 2026</p>
+</div>
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
+</span>
+</span>
+</div>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "..";</script>
+<script src="../js/theme_extra.js"></script>
+<script src="../js/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script>
+<script src="../js/umlconvert.js"></script>
+<script src="../search/main.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>

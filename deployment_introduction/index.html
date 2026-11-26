@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../img/favicon.ico" rel="shortcut icon"/>
-<title>网络与部署原理 - 仿真桥</title>
+<title>部署介绍 - 仿真桥</title>
 <link href="../css/theme.css" rel="stylesheet"/>
 <link href="../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u7f51\u7edc\u4e0e\u90e8\u7f72\u539f\u7406";
+        var mkdocs_page_name = "\u90e8\u7f72\u4ecb\u7ecd";
         var mkdocs_page_input_path = "deployment_introduction.md";
         var mkdocs_page_url = null;
       </script>
@@ -37,23 +37,23 @@
 </div>
 <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="..">主页</a>
+<li class="toctree-l1"><a class="reference internal" href="..">入门</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../GettingStarted/">入门与完整部署</a>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted/">快速开始</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../Troubleshooting/">常见问题排查</a>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_apollo12/">配置与 Apollo 12 适配记录</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">示例视频与控制器</a>
+<li class="toctree-l1"><a class="" href="../PR">None</a>
 </li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="#">网络与部署原理</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">部署介绍</a>
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="#reference">Reference:</a>
 <ul>
@@ -68,6 +68,10 @@
 </ul>
 </li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../RefinedController/">精调控制器与示例视频</a>
+</li>
+</ul>
 </div>
 </div>
 </nav>
@@ -80,7 +84,7 @@
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
 <li><a aria-label="Docs" class="icon icon-home" href=".."></a></li>
-<li class="breadcrumb-item active">网络与部署原理</li>
+<li class="breadcrumb-item active">部署介绍</li>
 <li class="wy-breadcrumbs-aside">
 <a href="https://github.com/OpenHUTB/apollo_bridge/edit/master/docs/deployment_introduction.md"> 编辑页面</a>
 </li>
@@ -90,9 +94,6 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <div><h1 id="deployment-introduction">Deployment Introduction</h1>
-<blockquote>
-<p><strong>中文文档导航</strong>：本文保留了早期上游仓库的多容器网络拓扑图作架构参考。如需可复现的完整部署步骤、脚本路径说明（CARLA Compose 文件位于 <code>carla_scripts/</code>，当前仓库已无 <code>docker/</code> 目录）及 Dreamview 交互教程，请直接参阅 <a href="../GettingStarted/">入门与完整部署指南</a> 与 <a href="../Troubleshooting/">常见问题与排障手册</a>。</p>
-</blockquote>
 <p>To make the Carla Apollo Bridge work properly, you need to start the following three containers:</p>
 <p><strong>Apollo container</strong></p>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span>bash<span class="w"> </span>docker/scripts/dev_start.sh
@@ -127,7 +128,8 @@ The preceding command starts Carla Apollo Bridge container. By default, the cont
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-left" href="../RefinedController/" title="示例视频与控制器"><span class="icon icon-circle-arrow-left"></span> 前一页</a>
+<a class="btn btn-neutral float-left" href="../configuration_apollo12/" title="配置与 Apollo 12 适配记录"><span class="icon icon-circle-arrow-left"></span> 前一页</a>
+<a class="btn btn-neutral float-right" href="../RefinedController/" title="精调控制器与示例视频">后一页 <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">
@@ -144,7 +146,8 @@ The preceding command starts Carla Apollo Bridge container. By default, the cont
 <span>
 <a href="https://github.com/OpenHUTB/apollo_bridge" style="color: #fcfcfc">OpenHUTB</a>
 </span>
-<span><a href="../RefinedController/" style="color: #fcfcfc">« 前一页</a></span>
+<span><a href="../configuration_apollo12/" style="color: #fcfcfc">« 前一页</a></span>
+<span><a href="../RefinedController/" style="color: #fcfcfc">后一页 »</a></span>
 </span>
 </div>
 <script src="../js/jquery-3.6.0.min.js"></script>
