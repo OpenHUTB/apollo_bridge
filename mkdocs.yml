@@ -59,7 +59,11 @@ copyright: OpenHUTB 版权所有 &copy; {year}
 
 nav:
 - 入门: 'index.md'
-- 示例视频: 'RefinedController.md'
+- 快速开始: 'GettingStarted.md'
+- 配置与 Apollo 12 适配记录: 'configuration_apollo12.md'
+- PR #3 复现记录与评审: 'PR3_reproduction_review.md'
+- 部署介绍: 'deployment_introduction.md'
+- 精调控制器与示例视频: 'RefinedController.md'
 
 # - mdx_math 用于行内公式显示
 markdown_extensions:
